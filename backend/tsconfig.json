@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@api-docs/*": ["src/api-docs/*"],
+      "@common/*": ["src/common/*"],
+      "@modules/*": ["src/modules/*"],
+      "@src/*": ["src/*"]
+    },
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "importsNotUsedAsValues": "remove",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "skipLibCheck": true,
+    "ignoreDeprecations": "5.0"
+  },
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "custom.d.ts"]
+}
