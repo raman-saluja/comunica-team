@@ -25,7 +25,7 @@ The `server` folder contains the Node.js backend, handling server-side logic and
 2. Run `npm install` to install dependencies.
 3. Configure environment variables as necessary (e.g., database connection strings).
 4. Run `npm start` to start the Node.js server.
-5. The server will be running on the specified port, typically `http://localhost:YOUR_PORT`.
+5. The server will be running on the specified port, typically `http://localhost:8080`.
 
 ## Technologies Used
 
