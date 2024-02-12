@@ -1,0 +1,11 @@
+.quill{
+    background-color: hsl(var(--primary-foreground));
+    position: absolute;
+    bottom: 0;
+    min-height: 100%;
+}
+
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow{
+    border: none;
+}

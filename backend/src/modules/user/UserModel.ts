@@ -13,7 +13,7 @@ export enum UserVerifyStatus {
 
 export interface UserInterface {
   _id: Schema.Types.ObjectId;
-  name?: string;
+  name: string;
   email: string;
   password?: string;
   avatar?: string;
