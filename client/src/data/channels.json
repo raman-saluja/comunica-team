@@ -1,24 +1,28 @@
 [
     {
         "id": "1",
+        "_id": "1",
         "name": "codecanyon",
         "description": "",
         "workspace": "1"
     },
     {
         "id": "2",
+        "_id": "2",
         "name": "issue-245",
         "description": "",
         "workspace": "1"
     },
     {
         "id": "3",
+        "_id": "3",
         "name": "fun-chat",
         "description": "",
         "workspace": "1"
     },
     {
         "id": "4",
+        "_id": "4",
         "name": "getting-started",
         "description": "",
         "workspace": "1"

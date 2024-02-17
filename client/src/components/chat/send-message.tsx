@@ -7,10 +7,7 @@ import "./react-quill-customise.css";
 
 export default function SendMessage() {
   const [value, setValue] = useState("");
-  const ReactQuill = useMemo(
-    () => React.lazy(() => import("react-quill")),
-    []
-  );
+  const ReactQuill = useMemo(() => React.lazy(() => import("react-quill")), []);
 
   return (
     <div className="relative bg-primary-foreground w-full place-items-end h-[10vh] px-5 !overflow-visible">

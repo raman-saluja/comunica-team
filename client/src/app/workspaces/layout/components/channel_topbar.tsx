@@ -15,36 +15,30 @@ import { LogOut, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { logout } from "@/app/auth/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthInterface } from "@/lib/auth";
 
 export interface ChannelInfoProps {
-  channel: Channel | undefined;
+  title: string;
 }
 
 function ChannelInfo({ ...props }: ChannelInfoProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useSelector(({ auth }: { auth: AuthInterface }) => auth);
 
-  useEffect(() => {
-    console.log(auth);
-  }, []);
+  const auth = useSelector(({ auth }: { auth: AuthInterface }) => auth);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
+
   return (
     <div className="w-full px-4 py-4 h-[10vh]">
       <div className="flex items-center justify-between">
-        {props.channel ? (
-          <h4 className="font-bold tracking-tight"># {props.channel.name}</h4>
-        ) : (
-          <h4 />
-        )}
+        <h4 className="font-bold tracking-tight">{props.title}</h4>
         <div className="place-items-end mr-5">
           <DropdownMenu>
             <DropdownMenuTrigger>

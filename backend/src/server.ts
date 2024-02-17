@@ -16,6 +16,8 @@ import { db } from '@common/utils/db';
 import { getCorsOrigin } from '@common/utils/envConfig';
 import { AuthRouter } from '@modules/auth/AuthRouter';
 import { healthCheckRouter } from '@modules/healthCheck/healthCheckRouter';
+import { WorkspaceRouter } from '@modules/workspaces/WorkspaceRouter';
+import { ChannelRouter } from '@modules/channels/ChannelRouter';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -30,7 +32,7 @@ db();
 // Middlewares
 app.use(cors({ origin: [corsOrigin], credentials: true }));
 app.use(helmet());
-app.use(rateLimiter);
+// app.use(rateLimiter);
 app.use(apiResponseMiddleware);
 app.use(express.json());
 
@@ -44,6 +46,8 @@ app.use(requestLogger());
 // Routes
 app.use('/health-check', healthCheckRouter);
 app.use('/auth', AuthRouter);
+app.use('/workspaces', WorkspaceRouter);
+app.use('/channels', ChannelRouter);
 
 // Swagger UI
 app.use(openAPIRouter);

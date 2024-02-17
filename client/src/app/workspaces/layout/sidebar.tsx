@@ -13,8 +13,13 @@ import { Plus } from "lucide-react";
 
 import { Settings } from "@/app/workspaces/layout/components/settings";
 import channels_list from "@/data/channels.json";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Workspace } from "@/app/dashboard/DashboardPage";
+import { APIResponse, api } from "@/axios/api";
 
 export interface Channel {
+  _id: string;
   id: string;
   name: string;
   description: string;
@@ -22,17 +27,36 @@ export interface Channel {
 }
 
 export interface SidebarProps {
-  channel: Channel | undefined;
-  setChannel: Function;
+  workspace: Workspace;
 }
 
 export function Sidebar({ ...props }: SidebarProps) {
+  const workspace = props.workspace;
+
+  const [channels, setChannels] = useState<Channel[]>([]);
+
+  const getChannels = async () =>
+    await api.get<APIResponse<Channel[]>>("channels");
+
+  useEffect(() => {
+    getChannels().then(({ data }) => {
+      setChannels(data.data);
+    });
+  }, []);
+
+  const navigate = useNavigate();
+  const params = useParams();
+  const channel_id = params.channelID ?? null;
+
   return (
     <ScrollArea>
       <Card className="h-screen">
         <CardHeader>
-          <CardTitle className="flex items-center">
-            {"Pesofts Pvt. Ltd."}
+          <CardTitle
+            className="flex items-center"
+            onClick={() => navigate(`workspaces/${workspace._id}`)}
+          >
+            {workspace.name}
           </CardTitle>
           <CardDescription>
             Invite your team members to collaborate.
@@ -44,27 +68,19 @@ export function Sidebar({ ...props }: SidebarProps) {
               <small className="text-sm font-bold leading-none">Channels</small>
             </div>
             <div className="w-full grid grid-flow-row gap-2">
-              {channels_list.map((channel: Channel, index) => (
-                <button
-                  type="button"
-                  onClick={() =>
-                    props.channel && channel.id == props.channel.id
-                      ? props.setChannel(undefined)
-                      : props.setChannel(channel)
-                  }
+              {channels.map((channel: Channel, index) => (
+                <Link
+                  to={`/workspaces/${workspace._id}/channel/${channel._id}`}
                   key={`channel_${index}`}
                   className={cn(
                     buttonVariants({
-                      variant:
-                        props.channel && channel.id == props.channel.id
-                          ? "secondary"
-                          : "ghost",
+                      variant: channel_id==channel._id ? "secondary" : "ghost",
                     }),
                     "relative justify-start text-muted-foreground"
                   )}
                 >
                   <span># {channel.name}</span>
-                </button>
+                </Link>
               ))}
             </div>
             <div className="px-4 my-2 mt-5 pt-5 flex justify-between items-center">

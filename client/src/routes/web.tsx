@@ -6,18 +6,12 @@ import RegisterPage from "@/app/auth/register/RegisterPage";
 import DefaultLayout from "@/app/layout/DefaultLayout";
 import { APIResponse, api } from "@/axios/api";
 import NoMatch from "@/errors/NoMatch";
-import React from "react";
 import {
   LoaderFunction,
   LoaderFunctionArgs,
   RouteObject,
   redirect,
 } from "react-router-dom";
-
-const DashboadPage = React.lazy(() => import("@/app/dashboard/DashboardPage"));
-const ViewWorkspacePage = React.lazy(
-  () => import("@/app/workspaces/view/ViewWorkspacePage")
-);
 
 const loaderForAuthPages: LoaderFunction = () => {
   if (localStorage.getItem(AUTH_TOKEN)) {
@@ -86,14 +80,25 @@ const AppRoutes: RouteObject[] = [
   {
     Component: DefaultLayout,
     loader: loaderForProtected,
+    // errorElement: <NoMatch />,
     children: [
       {
         path: "dashboard",
-        Component: DashboadPage,
+        lazy: () => import("@/app/dashboard/DashboardPage"),
       },
       {
-        path: "workspaces/:id",
-        Component: ViewWorkspacePage,
+        id: "workspaces",
+        lazy: () => import("@/app/workspaces/layout/WorkspaceLayout"),
+        children: [
+          {
+            path: "/workspaces/:id",
+            lazy: () => import("@/app/workspaces/ViewWorkspacePage"),
+          },
+          {
+            path: "/workspaces/:id/channel/:channelID",
+            lazy: () => import("@/app/workspaces/ViewWorkspaceChannel"),
+          },
+        ],
       },
     ],
   },
