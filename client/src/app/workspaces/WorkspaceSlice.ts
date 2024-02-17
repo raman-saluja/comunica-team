@@ -1,4 +1,4 @@
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import { store } from "@/redux/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Workspace } from "../dashboard/DashboardPage";

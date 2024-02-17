@@ -1,6 +1,6 @@
 import { Workspace } from "@/app/dashboard/DashboardPage";
 import { Channel } from "@/app/workspaces/layout/sidebar";
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

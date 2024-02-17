@@ -7,7 +7,7 @@ import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-import { APIResponse } from "@/axios/api";
+import { APIResponse } from "@/api/api";
 import {
   Form,
   FormControl,
@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { UserInterface } from "@/types/User";
+import { UserInterface } from "@/app/users/UserInterface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";

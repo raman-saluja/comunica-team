@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
-import { logout } from "@/app/auth/AuthSlice";
+import { AuthInterface, logout } from "@/app/auth/AuthSlice";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AuthInterface } from "@/lib/auth";
 import { LogOut, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +22,12 @@ function ChannelInfo({ ...props }: ChannelInfoProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const auth = useSelector(({ auth }: { auth: AuthInterface }) => auth);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
-
 
   return (
     <div className="w-full px-4 py-4 h-[10vh]">

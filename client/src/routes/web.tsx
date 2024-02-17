@@ -4,7 +4,7 @@ import EmailFailedConfirm from "@/app/auth/email/EmailFailedConfirm";
 import LoginPage from "@/app/auth/login/LoginPage";
 import RegisterPage from "@/app/auth/register/RegisterPage";
 import DefaultLayout from "@/app/layout/DefaultLayout";
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import NoMatch from "@/errors/NoMatch";
 import {
   LoaderFunction,

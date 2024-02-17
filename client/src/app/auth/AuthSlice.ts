@@ -1,9 +1,13 @@
-import { api } from "@/axios/api";
-import { AuthInterface } from "@/lib/auth";
+import { api } from "@/api/api";
 import { store } from "@/redux/store";
-import { UserInterface } from "@/types/User";
+import { UserInterface } from "@/app/users/UserInterface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+
+export interface AuthInterface {
+  status: boolean;
+  user?: UserInterface;
+}
 
 export const AUTH_TOKEN = "token";
 

@@ -1,12 +1,9 @@
 "use client";
 
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import ChatItem from "@/components/chat/chat-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  LoaderFunction,
-  useLoaderData
-} from "react-router-dom";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
 import ChannelInfo from "./layout/components/channel_topbar";
 import { Channel } from "./layout/sidebar";
 
@@ -26,7 +23,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export const Component: React.FC = () => {
-
   const { channel } = useLoaderData() as { channel: Channel };
 
   return (

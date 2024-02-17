@@ -13,7 +13,7 @@ import { Plus } from "lucide-react";
 
 import { Workspace } from "@/app/dashboard/DashboardPage";
 import { Settings } from "@/app/workspaces/layout/components/settings";
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -73,7 +73,8 @@ export function Sidebar({ ...props }: SidebarProps) {
                   key={`channel_${index}`}
                   className={cn(
                     buttonVariants({
-                      variant: channel_id==channel._id ? "secondary" : "ghost",
+                      variant:
+                        channel_id == channel._id ? "secondary" : "ghost",
                     }),
                     "relative justify-start text-muted-foreground"
                   )}

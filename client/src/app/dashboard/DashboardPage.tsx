@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-import { api } from "@/axios/api";
+import { api } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link, LoaderFunction, useLoaderData } from "react-router-dom";

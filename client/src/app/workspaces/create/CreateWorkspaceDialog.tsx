@@ -1,5 +1,5 @@
 import { Workspace } from "@/app/dashboard/DashboardPage";
-import { APIResponse, api } from "@/axios/api";
+import { APIResponse, api } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -72,7 +72,7 @@ function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
   };
   return (
     <Form {...form}>
-      <Dialog {...props} >
+      <Dialog {...props}>
         <DialogTrigger asChild>
           <Button variant="default" className="w-full">
             Create Workspace
