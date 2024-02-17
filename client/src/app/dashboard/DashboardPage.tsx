@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { api } from "@/axios/api";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ export interface Workspace {
   workspace: string;
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
-  let res = await api.get("workspaces");
+export const loader: LoaderFunction = async () => {
+  const res = await api.get("workspaces");
   return { workspaces: res.data.data };
 };
 

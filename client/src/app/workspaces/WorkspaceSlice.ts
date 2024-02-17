@@ -1,9 +1,6 @@
 import { APIResponse, api } from "@/axios/api";
-import { AuthInterface, decodeJWT } from "@/lib/auth";
 import { store } from "@/redux/store";
-import { UserInterface } from "@/types/User";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
 import { Workspace } from "../dashboard/DashboardPage";
 
 interface WorkspaceState {
@@ -22,7 +19,7 @@ export const workspace = async (id: Workspace["_id"]) => {
       },
     })
     .then((res) => {
-      let workspace: Workspace = { ...res.data.data };
+      const workspace: Workspace = { ...res.data.data };
       return workspace;
     });
 };

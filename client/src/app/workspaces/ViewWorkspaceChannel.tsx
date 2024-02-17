@@ -1,13 +1,11 @@
 "use client";
 
-import { Workspace } from "@/app/dashboard/DashboardPage";
 import { APIResponse, api } from "@/axios/api";
 import ChatItem from "@/components/chat/chat-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-    LoaderFunction,
-    useLoaderData,
-    useRouteLoaderData,
+  LoaderFunction,
+  useLoaderData
 } from "react-router-dom";
 import ChannelInfo from "./layout/components/channel_topbar";
 import { Channel } from "./layout/sidebar";
@@ -28,9 +26,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export const Component: React.FC = () => {
-  const { workspace } = useRouteLoaderData("workspaces") as {
-    workspace: Workspace;
-  };
 
   const { channel } = useLoaderData() as { channel: Channel };
 

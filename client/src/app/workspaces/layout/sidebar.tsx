@@ -11,12 +11,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
-import { Settings } from "@/app/workspaces/layout/components/settings";
-import channels_list from "@/data/channels.json";
-import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Workspace } from "@/app/dashboard/DashboardPage";
+import { Settings } from "@/app/workspaces/layout/components/settings";
 import { APIResponse, api } from "@/axios/api";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export interface Channel {
   _id: string;

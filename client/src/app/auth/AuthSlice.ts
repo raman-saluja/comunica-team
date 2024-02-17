@@ -1,5 +1,5 @@
 import { api } from "@/axios/api";
-import { AuthInterface, decodeJWT } from "@/lib/auth";
+import { AuthInterface } from "@/lib/auth";
 import { store } from "@/redux/store";
 import { UserInterface } from "@/types/User";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -19,7 +19,7 @@ export const user = async () => {
       },
     })
     .then((res: AxiosResponse<UserInterface>) => {
-      let user: UserInterface = { ...res.data };
+      const user: UserInterface = { ...res.data };
       user.token = localStorage.getItem(AUTH_TOKEN)!;
       return user;
     });
@@ -29,12 +29,6 @@ export const user = async () => {
 export const getUser = createAsyncThunk("auth/user", async () => {
   return user();
 });
-
-// First, create the thunk
-// export const isAuthenticated = createAsyncThunk("auth/user", async () => {
-//   return user();
-// });
-
 const initialState: AuthInterface = {
   status: false,
 };
@@ -56,7 +50,7 @@ export const authSlice = createSlice({
       state = {
         status: false,
       };
-      return state;
+      return state as AuthInterface;
     },
   },
   extraReducers: (builder) => {

@@ -1,8 +1,7 @@
-"use client";
-import { Channel } from "@/app/workspaces/layout/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
+import { logout } from "@/app/auth/AuthSlice";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,12 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AuthInterface } from "@/lib/auth";
 import { LogOut, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { logout } from "@/app/auth/AuthSlice";
-import { useNavigate, useParams } from "react-router-dom";
-import { AuthInterface } from "@/lib/auth";
+import { useNavigate } from "react-router-dom";
 
 export interface ChannelInfoProps {
   title: string;

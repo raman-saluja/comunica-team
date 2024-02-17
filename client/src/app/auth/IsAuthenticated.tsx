@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Route, useLocation } from "react-router-dom";
-import { getUser } from "./AuthSlice";
 import { store } from "@/redux/store";
+import { useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { getUser } from "./AuthSlice";
 
 const IsAuthenticated = ({ children }: { children: JSX.Element }) => {
-  let location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     store.dispatch(getUser()).then(() => {

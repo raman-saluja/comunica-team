@@ -1,16 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 
-import { Workspace } from "@/app/dashboard/DashboardPage";
 import { CreateChannelDialog } from "@/app/channels/create/CreateChannelDialog";
+import { Workspace } from "@/app/dashboard/DashboardPage";
 import {
   LoaderFunction,
-  useLoaderData,
-  useRouteLoaderData,
+  useRouteLoaderData
 } from "react-router-dom";
-import { useEffect } from "react";
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async () => {
   return {};
 };
 

@@ -72,7 +72,7 @@ function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
   };
   return (
     <Form {...form}>
-      <Dialog>
+      <Dialog {...props} >
         <DialogTrigger asChild>
           <Button variant="default" className="w-full">
             Create Workspace

@@ -1,7 +1,5 @@
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { ClientToServerEvents, ServerToClientEvents } from "@/types/socket";
-import { io, Socket } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 
 export const socketIO = () => {
   const socket: Socket<ServerToClientEvents, ClientToServerEvents> =

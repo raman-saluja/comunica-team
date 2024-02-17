@@ -1,15 +1,8 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
-import { Cross, XCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-
-// Function to obfuscate email
-const obfuscateEmail = (email: string) => {
-  const [username, domain] = email.split("@");
-  const obfuscatedUsername = username.substring(0, 3) + "..."; // You can customize the obfuscation as needed
-  return obfuscatedUsername + "@" + domain;
-};
 
 export default function EmailFailedConfirm() {
   const handleResendEmail = () => null;

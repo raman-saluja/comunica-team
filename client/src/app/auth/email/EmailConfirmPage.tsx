@@ -2,15 +2,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
-// Function to obfuscate email
-const obfuscateEmail = (email: string) => {
-  const [username, domain] = email.split("@");
-  const obfuscatedUsername = username.substring(0, 3) + "..."; // You can customize the obfuscation as needed
-  return obfuscatedUsername + "@" + domain;
-};
-
 export default function EmailConfirmPage() {
-  const email = "test@gmail.com";
   const handleResendEmail = () => null;
   return (
     <>

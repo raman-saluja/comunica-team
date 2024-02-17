@@ -20,9 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
@@ -52,7 +50,10 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
     setIsLoading(true);
 
     api
-      .post<APIResponse<Channel>>(`channels`, {...data, workspace_id: workspace._id})
+      .post<APIResponse<Channel>>(`channels`, {
+        ...data,
+        workspace_id: workspace._id,
+      })
       .then((res) => {
         if (res.data.success) {
           navigate(`/workspaces/${workspace._id}/channel/${res.data.data._id}`);
@@ -112,6 +113,7 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
           <DialogFooter className="sm:justify-between">
             <DialogClose asChild>
               <Button
+                disabled={isLoading}
                 type="button"
                 onClick={form.handleSubmit(onSubmit)}
                 variant={"default"}

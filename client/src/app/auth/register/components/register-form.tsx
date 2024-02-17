@@ -1,28 +1,24 @@
-"use client";
-
-import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { string, z } from "zod";
-import axios, { AxiosError, AxiosResponse, HttpStatusCode } from "axios";
+import axios, { AxiosError } from "axios";
+import * as React from "react";
+import { z } from "zod";
 
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+import { APIResponse } from "@/axios/api";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { APIResponse } from "@/axios/api";
 import { useNavigate } from "react-router-dom";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
