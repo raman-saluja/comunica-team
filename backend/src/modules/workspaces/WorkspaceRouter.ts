@@ -1,10 +1,6 @@
-import bcrypt from 'bcryptjs';
 import express, { Request, Response, Router } from 'express';
-import passport from 'passport';
 
-import { authJWT, genPassword } from '@common/utils/auth';
-import { User, UserInterface, UserStatus, UserVerifyStatus } from '@modules/user/UserModel';
-import { env } from '@common/utils/envConfig';
+
 import { Workspace } from './WorkspaceModel';
 
 export const WorkspaceRouter: Router = (() => {

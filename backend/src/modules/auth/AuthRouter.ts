@@ -3,8 +3,8 @@ import express, { Request, Response, Router } from 'express';
 import passport from 'passport';
 
 import { authJWT, genPassword } from '@common/utils/auth';
-import { User, UserInterface, UserStatus, UserVerifyStatus } from '@modules/user/UserModel';
 import { env } from '@common/utils/envConfig';
+import { User, UserInterface, UserStatus, UserVerifyStatus } from '@modules/user/UserModel';
 
 export const AuthRouter: Router = (() => {
   const router = express.Router();
@@ -65,7 +65,7 @@ export const AuthRouter: Router = (() => {
     async (request: Request, response: Response) => {
       const user = await User.findById((request.user as UserInterface)._id);
       if (user) {
-        let res = { ...user.toObject() };
+        const res = { ...user.toObject() };
         delete res.password;
         response.api.success(res);
       } else response.api.error({}, 404, 'invalid user');
@@ -98,7 +98,7 @@ export const AuthRouter: Router = (() => {
       if (!result) {
         return response.api.error({}, 401, 'invalid password');
       } else {
-        let res = { ...user.toObject() };
+        const res = { ...user.toObject() };
         delete res.password;
         const token = authJWT(user!);
         response.cookie('user', token, { maxAge: 900000, httpOnly: true });

@@ -1,6 +1,7 @@
-import { Workspace, WorkspaceInterface, WorkspaceSchema } from '@modules/workspaces/WorkspaceModel';
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
+
+import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
 
 export interface ChannelInterface {
   _id: Schema.Types.ObjectId;

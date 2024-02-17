@@ -1,9 +1,9 @@
 import express, { Request, Response, Router } from 'express';
+import passport from 'passport';
+
+import { Workspace } from '@modules/workspaces/WorkspaceModel';
 
 import { Channel } from './ChannelModel';
-import { Workspace, WorkspaceSchema } from '@modules/workspaces/WorkspaceModel';
-import passport from 'passport';
-import { model } from 'mongoose';
 
 export const ChannelRouter: Router = (() => {
   const router = express.Router();
