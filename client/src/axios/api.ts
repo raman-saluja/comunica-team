@@ -1,7 +1,7 @@
 import { AUTH_TOKEN } from "@/app/auth/AuthSlice";
 import axios, { HttpStatusCode } from "axios";
 
-export type APIResponse<T> = {
+export type APIResponse<T = unknown> = {
   success: boolean;
   message: string;
   data: T;
