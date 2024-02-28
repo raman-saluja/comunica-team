@@ -1,38 +1,32 @@
-import { Server } from 'socket.io';
-
-import { getPort } from '@common/utils/envConfig';
+import { passportAuth, passportSocketAuth, wrapMiddlewareForSocketIo } from '@common/utils/auth';
+import { env, getPort } from '@common/utils/envConfig';
+import { registerChatEvents } from '@modules/chats/ChatEvents';
 import { app, logger } from '@src/server';
+import passport from 'passport';
+import { Socket } from 'socket.io';
 
 const port = getPort();
 
-const server = app.listen(port, () => {
+const httpServer = app.listen(port, () => {
   logger.info(`Server listening on port ${port}`);
 });
-// const io = socket(server, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//     methods: ['GET', 'POST'],
-//   },
-// });
 
-const io = new Server({
+const socketIO = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: env('CORS_ORIGIN'),
     methods: ['GET', 'POST'],
   },
 });
 
-export const socketIO = io;
-
-io.on('connection', () => {
-  // socket.emit('noArg');
-  // console.log('a user connected');
+socketIO.on('connection', (socket: Socket) => {
+  registerChatEvents(socket);
 });
 
 const onCloseSignal = () => {
   logger.info('sigint received, shutting down');
-  server.close(() => {
+  httpServer.close(() => {
     logger.info('server closed');
+    socketIO.disconnectSockets();
     process.exit();
   });
 
@@ -41,3 +35,5 @@ const onCloseSignal = () => {
 
 process.on('SIGINT', onCloseSignal);
 process.on('SIGTERM', onCloseSignal);
+
+export { socketIO };
