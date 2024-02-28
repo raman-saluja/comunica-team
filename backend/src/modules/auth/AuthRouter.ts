@@ -38,7 +38,7 @@ export const AuthRouter: Router = (() => {
       if (user) {
         user.verify = UserVerifyStatus.YES;
         user.save();
-        response.api.success({ ...user.toObject(), token: authJWT(user) });
+        response.api.success({ ...user.toJSON(), token: authJWT(user) });
       } else response.api.error({}, 404, 'invalid user');
     }
   );
@@ -54,7 +54,7 @@ export const AuthRouter: Router = (() => {
           user.password = await genPassword(data.password);
           await user.save();
         }
-        response.api.success({ ...user.toObject(), token: authJWT(user) });
+        response.api.success({ ...user.toJSON(), token: authJWT(user) });
       } else response.api.error({}, 404, 'invalid user');
     }
   );
@@ -63,10 +63,9 @@ export const AuthRouter: Router = (() => {
     '/user',
     passport.authenticate('jwt', { session: false }),
     async (request: Request, response: Response) => {
-      const user = await User.findById((request.user as UserInterface)._id);
+      const user = await User.findById((request.user as UserInterface).id);
       if (user) {
-        const res = { ...user.toObject() };
-        delete res.password;
+        const res = { ...user.toJSON() };
         response.api.success(res);
       } else response.api.error({}, 404, 'invalid user');
     }
@@ -98,7 +97,7 @@ export const AuthRouter: Router = (() => {
       if (!result) {
         return response.api.error({}, 401, 'invalid password');
       } else {
-        const res = { ...user.toObject() };
+        const res = { ...user.toJSON() };
         delete res.password;
         const token = authJWT(user!);
         response.cookie('user', token, { maxAge: 900000, httpOnly: true });

@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
 
 import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
+import { defaultToJSONMethod } from '@common/utils/db';
 
 export interface ChannelInterface {
   _id: Schema.Types.ObjectId;
@@ -15,6 +16,8 @@ export const ChannelSchema = new Schema<ChannelInterface>({
   description: { type: String, required: false },
   workspace: { type: Schema.ObjectId, ref: 'Workspace' },
 });
+
+ChannelSchema.set('toJSON', defaultToJSONMethod());
 
 export const Channel = mongoose.model<ChannelInterface>('Channel', ChannelSchema);
 export const swaggerSchema = m2s(Channel);

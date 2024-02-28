@@ -48,7 +48,7 @@ export const ChannelRouter: Router = (() => {
       const channel = await Channel.findById(request.params.channelId).populate('workspace');
 
       if (channel) {
-        return response.api.success({ ...channel.toJSON(), id: channel.id });
+        return response.api.success({ ...channel.toJSON() });
       } else {
         response.api.error({}, 500, 'Something went wrong');
       }
