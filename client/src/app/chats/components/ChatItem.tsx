@@ -1,6 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ChatMessageInterface } from "../ChatModel";
 
-function ChatItem() {
+interface ChatItemProps {
+  message: ChatMessageInterface;
+}
+
+function ChatItem({ message }: ChatItemProps) {
   return (
     <div className="flex items-start px-4 space-x-4 py-2">
       <Avatar>
@@ -10,17 +15,18 @@ function ChatItem() {
       <div className="space-y-1">
         <div className="space-x-2">
           <span className="text-sm font-medium leading-none pb-2">
-            Sofia Davis
+            user-{message.sender.id}
           </span>
           <span className="text-muted-foreground"> &#9679;</span>
           <span className="text-sm font-medium leading-none pb-2 text-muted-foreground">
+            {message.created_at}
             5:18 PM
           </span>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum
-          commodi non alias fugiat.
-        </p>
+        <div
+          className="text-sm text-muted-foreground"
+          dangerouslySetInnerHTML={{ __html: message.message }}
+        ></div>
       </div>
     </div>
   );

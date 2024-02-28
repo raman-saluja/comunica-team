@@ -1,3 +1,5 @@
+import { AUTH_TOKEN } from "@/app/auth/AuthSlice";
+import { store } from "@/redux/store";
 import * as jose from "jose";
 
 export const decodeJWT = async (token: string) => {
@@ -9,3 +11,8 @@ export const decodeJWT = async (token: string) => {
     return false;
   }
 };
+
+
+export const getAuthTokenFromStorage = () => {
+  return localStorage.getItem(AUTH_TOKEN);
+}

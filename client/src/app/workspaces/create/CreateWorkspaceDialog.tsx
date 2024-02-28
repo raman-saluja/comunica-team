@@ -54,7 +54,7 @@ function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
       )
       .then((res) => {
         if (res.data.success) {
-          navigate(`/workspaces/${res.data.data._id}`);
+          navigate(`/workspaces/${res.data.data.id}`);
         } else {
           toast({
             variant: "destructive",

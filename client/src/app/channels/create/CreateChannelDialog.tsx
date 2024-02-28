@@ -1,6 +1,5 @@
-import { Workspace } from "@/app/dashboard/DashboardPage";
-import { Channel } from "@/app/workspaces/layout/sidebar";
 import { APIResponse, api } from "@/api/api";
+import { Workspace } from "@/app/dashboard/DashboardPage";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,6 +28,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { z } from "zod";
+import { ChannelInterface } from "../ChannelInterface";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {
   workspace: Workspace;
@@ -50,13 +50,13 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
     setIsLoading(true);
 
     api
-      .post<APIResponse<Channel>>(`channels`, {
+      .post<APIResponse<ChannelInterface>>(`channels`, {
         ...data,
-        workspace_id: workspace._id,
+        workspace_id: workspace.id,
       })
       .then((res) => {
         if (res.data.success) {
-          navigate(`/workspaces/${workspace._id}/channel/${res.data.data._id}`);
+          navigate(`/workspaces/${workspace.id}/channel/${res.data.data.id}`);
         } else {
           toast({
             variant: "destructive",

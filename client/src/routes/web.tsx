@@ -96,7 +96,7 @@ const AppRoutes: RouteObject[] = [
           },
           {
             path: "/workspaces/:id/channel/:channelID",
-            lazy: () => import("@/app/workspaces/ViewWorkspaceChannel"),
+            lazy: () => import("@/app/channels/ViewChannelPage"),
           },
         ],
       },

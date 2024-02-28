@@ -12,7 +12,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 
   const workspaceData = (await workspace(params.id)) as Workspace;
-  if (!workspaceData._id) {
+  if (!workspaceData.id) {
     throw new Response("Invalid request", { status: 404 });
   }
 
@@ -27,8 +27,6 @@ export const Component: React.FC = () => {
       <Sidebar workspace={workspace} />
 
       <Outlet />
-
-      <Toaster />
     </div>
   );
 };

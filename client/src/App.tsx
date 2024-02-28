@@ -1,10 +1,10 @@
-import "./index.css";
 import React from "react";
+import "./index.css";
 
+import Loading from "@/app/layout/Loading";
+import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { store } from "@/redux/store";
-import Loading from "@/app/layout/Loading";
 import { cn } from "./lib/utils";
 
 function App() {

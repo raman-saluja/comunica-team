@@ -11,19 +11,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
+import { APIResponse, api } from "@/api/api";
 import { Workspace } from "@/app/dashboard/DashboardPage";
 import { Settings } from "@/app/workspaces/layout/components/settings";
-import { APIResponse, api } from "@/api/api";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-export interface Channel {
-  _id: string;
-  id: string;
-  name: string;
-  description: string;
-  workspace: string;
-}
+import { ChannelInterface } from "@/app/channels/ChannelInterface";
 
 export interface SidebarProps {
   workspace: Workspace;
@@ -32,10 +25,10 @@ export interface SidebarProps {
 export function Sidebar({ ...props }: SidebarProps) {
   const workspace = props.workspace;
 
-  const [channels, setChannels] = useState<Channel[]>([]);
+  const [channels, setChannels] = useState<ChannelInterface[]>([]);
 
   const getChannels = async () =>
-    await api.get<APIResponse<Channel[]>>("channels");
+    await api.get<APIResponse<ChannelInterface[]>>("channels");
 
   useEffect(() => {
     getChannels().then(({ data }) => {
@@ -53,7 +46,7 @@ export function Sidebar({ ...props }: SidebarProps) {
         <CardHeader>
           <CardTitle
             className="flex items-center"
-            onClick={() => navigate(`workspaces/${workspace._id}`)}
+            onClick={() => navigate(`workspaces/${workspace.id}`)}
           >
             {workspace.name}
           </CardTitle>
@@ -67,14 +60,13 @@ export function Sidebar({ ...props }: SidebarProps) {
               <small className="text-sm font-bold leading-none">Channels</small>
             </div>
             <div className="w-full grid grid-flow-row gap-2">
-              {channels.map((channel: Channel, index) => (
+              {channels.map((channel: ChannelInterface, index) => (
                 <Link
-                  to={`/workspaces/${workspace._id}/channel/${channel._id}`}
+                  to={`/workspaces/${workspace.id}/channel/${channel.id}`}
                   key={`channel_${index}`}
                   className={cn(
                     buttonVariants({
-                      variant:
-                        channel_id == channel._id ? "secondary" : "ghost",
+                      variant: channel_id == channel.id ? "secondary" : "ghost",
                     }),
                     "relative justify-start text-muted-foreground"
                   )}

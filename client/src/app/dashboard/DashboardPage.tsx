@@ -8,7 +8,7 @@ import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
 import CreateWorkspaceDialog from "../workspaces/create/CreateWorkspaceDialog";
 
 export interface Workspace {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   workspace: string;
@@ -32,7 +32,7 @@ export const Component: React.FC = () => {
             </CardHeader>
             <CardFooter className="flex justify-between">
               <Button asChild className="w-full" variant={"secondary"}>
-                <Link to={`/workspaces/${workspace._id}`}>View</Link>
+                <Link to={`/workspaces/${workspace.id}`}>View</Link>
               </Button>
             </CardFooter>
           </Card>

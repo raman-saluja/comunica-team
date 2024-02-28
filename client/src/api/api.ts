@@ -1,4 +1,5 @@
-import { AUTH_TOKEN } from "@/app/auth/AuthSlice";
+import { AUTH_TOKEN, logout } from "@/app/auth/AuthSlice";
+import { store } from "@/redux/store";
 import axios, { HttpStatusCode } from "axios";
 
 export type APIResponse<T = unknown> = {
@@ -16,3 +17,13 @@ api.interceptors.request.use((request) => {
   request.headers.Authorization = `Bearer ${localStorage.getItem(AUTH_TOKEN)}`;
   return request;
 });
+
+api.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    if (error.response.status == 401) {
+      store.dispatch(logout());
+    }
+    return error;
+  }
+);

@@ -1,15 +1,14 @@
-import { api } from "@/api/api";
-import { store } from "@/redux/store";
+import { APIResponse, api } from "@/api/api";
 import { UserInterface } from "@/app/users/UserInterface";
+import { store } from "@/redux/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
+
+export const AUTH_TOKEN = "token";
 
 export interface AuthInterface {
   status: boolean;
   user?: UserInterface;
 }
-
-export const AUTH_TOKEN = "token";
 
 export const isAuth = () => {
   return store.getState().auth.status;
@@ -17,15 +16,19 @@ export const isAuth = () => {
 
 export const user = async () => {
   return await api
-    .get<UserInterface>("auth/user", {
+    .get<APIResponse<UserInterface>>("auth/user", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN)}`,
       },
     })
-    .then((res: AxiosResponse<UserInterface>) => {
-      const user: UserInterface = { ...res.data };
+    .then((res) => {
+      if (!res.data.success) {
+        return { status: false };
+      }
+
+      const user: UserInterface = { ...res.data.data };
       user.token = localStorage.getItem(AUTH_TOKEN)!;
-      return user;
+      return { status: true, user };
     });
 };
 
@@ -33,8 +36,9 @@ export const user = async () => {
 export const getUser = createAsyncThunk("auth/user", async () => {
   return user();
 });
+
 const initialState: AuthInterface = {
-  status: false,
+  status: typeof localStorage.getItem(AUTH_TOKEN) == "string",
 };
 
 export const authSlice = createSlice({
@@ -59,8 +63,17 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getUser.fulfilled, (state, action) => {
-      console.log("working...");
-      state.user = { ...state.user!, ...action.payload };
+      state.status = action.payload.status;
+      state.user = { ...state.user!, ...action.payload.user };
+      return state;
+    });
+    builder.addCase(getUser.rejected, (state, action) => {
+      state.status = false;
+      if (!state.status) {
+        localStorage.removeItem(AUTH_TOKEN);
+      }
+      delete state.user;
+
       return state;
     });
   },

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "@/app/auth/AuthSlice";
 import workspaceReducer from "@/app/workspaces/WorkspaceSlice";
+import socketReducer from "@/socket/SocketSlice";
 // import SettingReducer from "app/settings/SettingReducer";
 
 export const store = configureStore({
