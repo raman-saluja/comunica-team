@@ -1,3 +1,4 @@
+import { defaultToJSONMethod } from '@common/utils/db';
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
 
@@ -13,6 +14,7 @@ export enum UserVerifyStatus {
 
 export interface UserInterface {
   _id: Schema.Types.ObjectId;
+  id: Schema.Types.ObjectId;
   name: string;
   email: string;
   password?: string;
@@ -27,6 +29,14 @@ export const UserSchema = new Schema<UserInterface>({
   password: { type: String, required: false },
   status: { type: String, required: false, default: UserStatus.ACTIVE },
   verify: { type: Number, required: false, default: UserVerifyStatus.NO },
+});
+
+UserSchema.set('toJSON', {
+  transform: (document, returnedObject: any) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.password;
+  },
 });
 
 export const User = mongoose.model<UserInterface>('User', UserSchema);
