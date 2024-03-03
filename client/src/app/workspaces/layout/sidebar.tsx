@@ -47,8 +47,8 @@ export function Sidebar({ ...props }: SidebarProps) {
   const channel_id = params.channelID ?? null;
 
   return (
-    <ScrollArea className="w-full md:w-4/12">
-      <Card className="h-full">
+    <ScrollArea className="w-full md:w-[30%] bg-black">
+      <div className="h-full ">
         <CardHeader>
           <CardTitle
             className="flex items-center"
@@ -138,7 +138,7 @@ export function Sidebar({ ...props }: SidebarProps) {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </div>
     </ScrollArea>
   );
 }
