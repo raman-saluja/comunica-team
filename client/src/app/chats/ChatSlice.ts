@@ -47,7 +47,7 @@ export const chatSlice = createSlice({
       }
       return state;
     });
-    builder.addCase(getChats.rejected, (state, action) => {
+    builder.addCase(getChats.rejected, (state, _action) => {
       return state;
     });
   },

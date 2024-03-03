@@ -1,10 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
 
-import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
+import { defaultToJSONMethod } from '@common/utils/db';
 import { ChannelInterface } from '@modules/channels/ChannelModel';
 import { UserInterface } from '@modules/user/UserModel';
-import { defaultToJSONMethod } from '@common/utils/db';
 
 export interface ChatInterface {
   _id: Schema.Types.ObjectId;

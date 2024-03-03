@@ -1,8 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
 
-import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
 import { defaultToJSONMethod } from '@common/utils/db';
+import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
 
 export interface ChannelInterface {
   _id: Schema.Types.ObjectId;

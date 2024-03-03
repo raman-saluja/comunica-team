@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { PassportStatic } from 'passport';
-import { ExtractJwt, JwtFromRequestFunction, Strategy, StrategyOptionsWithSecret } from 'passport-jwt';
+import { ExtractJwt, Strategy, StrategyOptionsWithSecret } from 'passport-jwt';
 
 import { env, getAppSecret } from '@common/utils/envConfig';
 import { UserInterface } from '@modules/user/UserModel';
@@ -47,6 +47,5 @@ export async function genPassword(password: string) {
   return await bcrypt.hash(password, 10);
 }
 
-
-export const wrapMiddlewareForSocketIo = (middleware: Function) => (socket: any, next: any) =>
+export const wrapMiddlewareForSocketIo = (middleware: any) => (socket: any, next: any) =>
   middleware(socket.request, {}, next);

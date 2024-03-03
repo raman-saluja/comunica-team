@@ -6,7 +6,6 @@ import passport from 'passport';
 import path from 'path';
 import { pino } from 'pino';
 
-import { openAPIRouter } from '@api-docs/openAPIRouter';
 import apiResponseMiddleware from '@common/middleware/apiResponseHandler';
 import errorHandler from '@common/middleware/errorHandler';
 // import rateLimiter from '@common/middleware/rateLimiter';
@@ -16,9 +15,10 @@ import { db } from '@common/utils/db';
 import { getCorsOrigin } from '@common/utils/envConfig';
 import { AuthRouter } from '@modules/auth/AuthRouter';
 import { ChannelRouter } from '@modules/channels/ChannelRouter';
-import { healthCheckRouter } from '@modules/healthCheck/healthCheckRouter';
-import { WorkspaceRouter } from '@modules/workspaces/WorkspaceRouter';
 import { ChatRouter } from '@modules/chats/ChatRouter';
+import { healthCheckRouter } from '@modules/healthCheck/healthCheckRouter';
+import { UserRouter } from '@modules/user/UserRouter';
+import { WorkspaceRouter } from '@modules/workspaces/WorkspaceRouter';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -50,9 +50,10 @@ app.use('/auth', AuthRouter);
 app.use('/workspaces', WorkspaceRouter);
 app.use('/channels', ChannelRouter);
 app.use('/chats', ChatRouter);
+app.use('/users', UserRouter);
 
 // Swagger UI
-app.use(openAPIRouter);
+// app.use(openAPIRouter);
 
 // Error handlers
 app.use(errorHandler());

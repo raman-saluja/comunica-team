@@ -1,15 +1,10 @@
+import { Socket } from 'socket.io';
+
 import { User } from '@modules/user/UserModel';
 import { socketIO } from '@src/index';
 import { logger } from '@src/server';
-import { Socket } from 'socket.io';
-import { Chat } from './ChatModel';
 
-interface loadMessagePayload {
-  payload: {
-    channel: string;
-  };
-  socket: Socket;
-}
+import { Chat } from './ChatModel';
 
 export const registerChatEvents = (socket: Socket) => {
   socket.on('join-channel', async (payload: string) => {
@@ -23,16 +18,16 @@ export const registerChatEvents = (socket: Socket) => {
   });
 
   socket.on('sendMessage', async (payload) => {
-    let user = await User.findById(payload.token!);
+    const user = await User.findById(payload.token!);
 
     if (!user) return;
 
-    let chat = new Chat();
+    const chat = new Chat();
     chat.sender = user;
     chat.channel = payload.channel;
     chat.message = payload.message;
     chat.save().then(async () => {
-      let message = await Chat.findById(chat.id).populate('sender').populate('channel').exec();
+      const message = await Chat.findById(chat.id).populate('sender').populate('channel').exec();
       socketIO.to(`channel-${payload.channel}`).emit('message-received', message?.toJSON());
     });
 

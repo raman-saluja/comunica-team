@@ -1,9 +1,9 @@
-import { passportAuth, passportSocketAuth, wrapMiddlewareForSocketIo } from '@common/utils/auth';
+import { Socket } from 'socket.io';
+import { Server } from 'socket.io';
+
 import { env, getPort } from '@common/utils/envConfig';
 import { registerChatEvents } from '@modules/chats/ChatEvents';
 import { app, logger } from '@src/server';
-import passport from 'passport';
-import { Socket } from 'socket.io';
 
 const port = getPort();
 
@@ -11,7 +11,7 @@ const httpServer = app.listen(port, () => {
   logger.info(`Server listening on port ${port}`);
 });
 
-const socketIO = require('socket.io')(httpServer, {
+const socketIO = new Server(httpServer, {
   cors: {
     origin: env('CORS_ORIGIN'),
     methods: ['GET', 'POST'],

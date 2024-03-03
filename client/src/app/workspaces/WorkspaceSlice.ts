@@ -11,7 +11,7 @@ const initialState: WorkspaceState = {
   activeWorkspace: null,
 };
 
-export const workspace = async (id: Workspace["_id"]) => {
+export const workspace = async (id: Workspace["id"]) => {
   return await api
     .get<APIResponse<Workspace>>(`workspaces/${id}`, {
       headers: {
@@ -27,7 +27,7 @@ export const workspace = async (id: Workspace["_id"]) => {
 // First, create the thunk
 export const setActiveWorkspace = createAsyncThunk(
   "workspace/setActive",
-  async (id: Workspace["_id"]) => {
+  async (id: Workspace["id"]) => {
     return workspace(id);
   }
 );

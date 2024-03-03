@@ -1,19 +1,15 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import ChatItem from "./ChatItem";
-import { useEffect, useState } from "react";
-import { socket } from "@/socket/socket";
-import { ChatMessageInterface } from "../ChatModel";
-import { APIResponse, api } from "@/api/api";
-import { toast } from "@/components/ui/use-toast";
-import { useLoaderData } from "react-router-dom";
 import { ChannelInterface } from "@/app/channels/ChannelInterface";
-import { useDispatch, useSelector } from "react-redux";
-import { getChats, newMessageReceived } from "../ChatSlice";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppDispatch, AppState } from "@/redux/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoaderData } from "react-router-dom";
+import { ChatMessageInterface } from "../ChatModel";
+import { getChats } from "../ChatSlice";
+import ChatItem from "./ChatItem";
 
 function ChatList() {
   const { channel } = useLoaderData() as { channel: ChannelInterface };
-  // const [messages, setMessages] = useState<ChatMessageInterface[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
   const messages = useSelector<AppState>(

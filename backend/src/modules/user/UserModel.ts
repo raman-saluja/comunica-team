@@ -1,4 +1,3 @@
-import { defaultToJSONMethod } from '@common/utils/db';
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
 
@@ -32,10 +31,11 @@ export const UserSchema = new Schema<UserInterface>({
 });
 
 UserSchema.set('toJSON', {
-  transform: (document, returnedObject: any) => {
+  transform: (_document, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.password;
+    delete returnedObject.__v;
   },
 });
 

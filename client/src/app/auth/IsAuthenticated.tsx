@@ -1,12 +1,10 @@
-import { AppDispatch, AppState, store } from "@/redux/store";
+import { AppDispatch, AppState } from "@/redux/store";
 import { useEffect } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { getUser } from "./AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "./AuthSlice";
 
 const IsAuthenticated = ({ children }: { children: JSX.Element }) => {
-  const location = useLocation();
-
   const auth = useSelector((state: AppState) => state.auth);
 
   const dispatch = useDispatch<AppDispatch>();

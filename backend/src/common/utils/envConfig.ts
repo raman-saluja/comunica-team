@@ -20,6 +20,6 @@ export function getEnvVar<T extends string | number>(key: string, type: 'string'
   return value as T;
 }
 
-export function env(key: string) {
+export const env = (key: string) => {
   return getEnvVar<string>(key, 'string');
-}
+};

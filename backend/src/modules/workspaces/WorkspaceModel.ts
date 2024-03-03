@@ -1,6 +1,7 @@
-import { defaultToJSONMethod } from '@common/utils/db';
 import mongoose, { Schema } from 'mongoose';
 import m2s from 'mongoose-to-swagger';
+
+import { defaultToJSONMethod } from '@common/utils/db';
 
 export interface WorkspaceInterface {
   _id: Schema.Types.ObjectId;

@@ -16,9 +16,10 @@ export const db = () => {
 
 export const defaultToJSONMethod = () => {
   return {
-    transform: (document: Document, returnedObject: any) => {
+    transform: (_document: Document, returnedObject: any) => {
       returnedObject.id = returnedObject._id.toString();
       delete returnedObject._id;
+      delete returnedObject.__v;
     },
   };
 };

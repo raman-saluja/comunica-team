@@ -67,7 +67,7 @@ export const authSlice = createSlice({
       state.user = { ...state.user!, ...action.payload.user };
       return state;
     });
-    builder.addCase(getUser.rejected, (state, action) => {
+    builder.addCase(getUser.rejected, (state, _action) => {
       state.status = false;
       if (!state.status) {
         localStorage.removeItem(AUTH_TOKEN);

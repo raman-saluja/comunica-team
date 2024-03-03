@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChatMessageInterface } from "../ChatModel";
 import moment from "moment";
+import { avatarFallBackName } from "@/lib/utils";
 
 interface ChatItemProps {
   message: ChatMessageInterface;
@@ -12,7 +13,7 @@ function ChatItem({ message }: ChatItemProps) {
       <Avatar>
         <AvatarImage src="/avatars/01.png" />
         <AvatarFallback>
-          {message.sender.name.split(" ").map((v, i) => (i <= 1 ? v[0] : ""))}
+          {avatarFallBackName(message.sender.name)}
         </AvatarFallback>
       </Avatar>
       <div className="space-y-1">

@@ -93,7 +93,7 @@ export const AuthRouter: Router = (() => {
       return response.api.error({}, 401, 'account suspended');
     }
 
-    return await bcrypt.compare(data.password, user.password, (err: any, result: any) => {
+    return await bcrypt.compare(data.password, user.password, (_err: any, result: any) => {
       if (!result) {
         return response.api.error({}, 401, 'invalid password');
       } else {

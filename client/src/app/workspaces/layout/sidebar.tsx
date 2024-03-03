@@ -9,11 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+import { avatarFallBackName, cn } from "@/lib/utils";
 import { ArrowLeftRightIcon, ChevronLeft, Plus } from "lucide-react";
 
 import { APIResponse, api } from "@/api/api";
-import { Workspace } from "@/app/dashboard/DashboardPage";
+import {
+  Workspace,
+  WorkspaceUserInterface,
+} from "@/app/dashboard/DashboardPage";
 import { Settings } from "@/app/workspaces/layout/components/settings";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -28,10 +31,16 @@ export function Sidebar({ ...props }: SidebarProps) {
   const workspace = props.workspace;
 
   const [channels, setChannels] = useState<ChannelInterface[]>([]);
+  const [team, setTeam] = useState<WorkspaceUserInterface[]>([]);
 
   const getChannels = async () =>
     await api.get<APIResponse<ChannelInterface[]>>(
       `channels?workspace=${workspace.id}`
+    );
+
+  const getTeamMembers = async () =>
+    await api.get<APIResponse<WorkspaceUserInterface[]>>(
+      `workspaces/${workspace.id}/users`
     );
 
   const location = useLocation();
@@ -39,6 +48,9 @@ export function Sidebar({ ...props }: SidebarProps) {
   useEffect(() => {
     getChannels().then(({ data }) => {
       setChannels(data.data);
+    });
+    getTeamMembers().then(({ data }) => {
+      setTeam(data.data);
     });
   }, [location]);
 
@@ -91,42 +103,26 @@ export function Sidebar({ ...props }: SidebarProps) {
               </Button>
             </div>
             <div className="w-full grid grid-flow-row">
-              <div className="cursor-pointer flex items-center p-4 space-x-4">
-                <Avatar className="w-7 h-7">
-                  <AvatarImage src="/avatars/01.png" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-xs font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-xs text-muted-foreground">m@example.com</p>
-                </div>
-              </div>
-              <div className="cursor-pointer flex items-center p-4 space-x-4">
-                <Avatar className="w-7 h-7">
-                  <AvatarImage src="/avatars/01.png" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-xs font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-xs text-muted-foreground">m@example.com</p>
-                </div>
-              </div>
-              <div className="cursor-pointer flex items-center p-4 space-x-4">
-                <Avatar className="w-7 h-7">
-                  <AvatarImage src="/avatars/01.png" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-xs font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-xs text-muted-foreground">m@example.com</p>
-                </div>
-              </div>
+              {team.map((member) => {
+                return (
+                  <div className="cursor-pointer flex items-center p-4 space-x-4">
+                    <Avatar className="w-7 h-7">
+                      <AvatarImage src="/avatars/01.png" />
+                      <AvatarFallback>
+                        {avatarFallBackName(member.user.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-xs font-medium leading-none">
+                        {member.user.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {member.role}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="flex flex-col w-full left-0 absolute bottom-10 px-4 gap-4">
