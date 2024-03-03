@@ -1,8 +1,20 @@
 .quill{
-    background-color: hsl(var(--primary-foreground));
+    background-color: inherit;
     position: absolute;
     bottom: 0;
     min-height: 100%;
+}
+
+.ql-toolbar.ql-snow{
+    padding: 4px;
+}
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button{
+    height: 20px;
+}
+
+.ql-snow .ql-stroke, .ql-snow .ql-fill{
+    stroke: hsl(var(--primary-foreground));
 }
 
 .ql-toolbar.ql-snow,

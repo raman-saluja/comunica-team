@@ -18,6 +18,7 @@ import { AuthRouter } from '@modules/auth/AuthRouter';
 import { ChannelRouter } from '@modules/channels/ChannelRouter';
 import { healthCheckRouter } from '@modules/healthCheck/healthCheckRouter';
 import { WorkspaceRouter } from '@modules/workspaces/WorkspaceRouter';
+import { ChatRouter } from '@modules/chats/ChatRouter';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -48,6 +49,7 @@ app.use('/health-check', healthCheckRouter);
 app.use('/auth', AuthRouter);
 app.use('/workspaces', WorkspaceRouter);
 app.use('/channels', ChannelRouter);
+app.use('/chats', ChatRouter);
 
 // Swagger UI
 app.use(openAPIRouter);

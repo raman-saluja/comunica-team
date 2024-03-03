@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "@/app/auth/AuthSlice";
+import chatsReducer from "@/app/chats/ChatSlice";
 import workspaceReducer from "@/app/workspaces/WorkspaceSlice";
-import socketReducer from "@/socket/SocketSlice";
-// import SettingReducer from "app/settings/SettingReducer";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     workspace: workspaceReducer,
+    chats: chatsReducer,
   },
 });
 

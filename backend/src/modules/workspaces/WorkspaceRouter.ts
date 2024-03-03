@@ -2,6 +2,7 @@ import express, { Request, Response, Router } from 'express';
 
 
 import { Workspace } from './WorkspaceModel';
+import passport from 'passport';
 
 export const WorkspaceRouter: Router = (() => {
   const router = express.Router();

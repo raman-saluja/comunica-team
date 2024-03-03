@@ -16,7 +16,7 @@ export const Component: React.FC = () => {
 
   return (
     <>
-      <div className="relative grid grid-flow-row col-span-3 h-screen items-center">
+      <div className="relative grid grid-flow-row w-full h-screen items-center">
         <div className="w-full text-center space-y-6 space-x-2">
           <div>
             <h3 className="text-muted-foreground opacity-75 pb-2">

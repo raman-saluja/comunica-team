@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 import { z } from "zod";
 import { ChannelInterface } from "../ChannelInterface";
+import { Plus } from "lucide-react";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {
   workspace: Workspace;
@@ -41,6 +42,8 @@ export const CreateChannelSchema = z.object({
 type ChannelForm = z.infer<typeof CreateChannelSchema>;
 
 export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
+  const [open, setOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const form = useForm<ChannelForm>({
@@ -56,6 +59,7 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
       })
       .then((res) => {
         if (res.data.success) {
+          setOpen(false);
           navigate(`/workspaces/${workspace.id}/channel/${res.data.data.id}`);
         } else {
           toast({
@@ -75,10 +79,10 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
 
   return (
     <Form {...form}>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button type="button" variant={"secondary"}>
-            Create Channel
+          <Button type="button" size={"sm"} variant={"default"}>
+            <Plus size={15} className="mr-2" /> create
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">

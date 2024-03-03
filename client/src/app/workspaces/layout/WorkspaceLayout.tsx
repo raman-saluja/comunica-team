@@ -23,7 +23,7 @@ export const Component: React.FC = () => {
   const { workspace } = useLoaderData() as { workspace: Workspace };
 
   return (
-    <div className="grid grid-flow-row md:grid-cols-4 h-screen overflow-y-hidden">
+    <div className="flex flex-grow h-screen max-h-screen md:overflow-y-hidden">
       <Sidebar workspace={workspace} />
 
       <Outlet />

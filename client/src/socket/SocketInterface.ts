@@ -6,7 +6,7 @@ export interface ServerToClientEvents {
   basicEmit: (a: number, b: string, c: Buffer) => void;
   withAck: (d: string, callback: (e: number) => void) => void;
   notification: (message: string) => void;
-  "message-received": (message: string) => void;
+  "message-received": (message: ChatMessageInterface) => void;
   "joined-channel": (participant_id: string) => void;
   "load-messages-fulfilled": (messages: ChatMessageInterface[]) => void;
 }

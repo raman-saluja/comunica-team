@@ -32,13 +32,14 @@ export const ChannelRouter: Router = (() => {
   });
 
   router.get('/', passport.authenticate('jwt', { session: false }), async (request: Request, response: Response) => {
-    const channels = await Channel.find().populate('workspace');
-
-    if (channels) {
-      return response.api.success(channels);
+    let channels;
+    if (request.query.workspace) {
+      channels = await Channel.find({ workspace: request.query.workspace });
     } else {
-      response.api.error({}, 500, 'Something went wrong');
+      channels = await Channel.find();
     }
+
+    return response.api.success(channels);
   });
 
   router.get(

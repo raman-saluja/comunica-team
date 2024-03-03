@@ -3,38 +3,37 @@ import ChatItem from "./ChatItem";
 import { useEffect, useState } from "react";
 import { socket } from "@/socket/socket";
 import { ChatMessageInterface } from "../ChatModel";
+import { APIResponse, api } from "@/api/api";
+import { toast } from "@/components/ui/use-toast";
+import { useLoaderData } from "react-router-dom";
+import { ChannelInterface } from "@/app/channels/ChannelInterface";
+import { useDispatch, useSelector } from "react-redux";
+import { getChats, newMessageReceived } from "../ChatSlice";
+import { AppDispatch, AppState } from "@/redux/store";
 
 function ChatList() {
-  const [messages, setMessages] = useState<ChatMessageInterface[]>([]);
+  const { channel } = useLoaderData() as { channel: ChannelInterface };
+  // const [messages, setMessages] = useState<ChatMessageInterface[]>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const messages = useSelector<AppState>(
+    (state) => state.chats[channel.id] ?? []
+  ) as ChatMessageInterface[];
 
   useEffect(() => {
-    socket.on("load-messages-fulfilled", (loaded_messages) => {
-      console.log('====================================');
-      console.log(loaded_messages);
-      console.log('====================================');
-      setMessages(loaded_messages);
-    });
-
-    return () => {
-      socket.off("load-messages-fulfilled");
-    };
-  }, [socket]);
+    dispatch(getChats(channel.id));
+  }, [channel]);
 
   return (
-    <>
-      <ScrollArea>
-        <div className="flex flex-col justify-end w-full space-y-2 h-[70vh]">
+    <div>
+      <ScrollArea className="h-[80vh]">
+        <div className="flex flex-col justify-end w-full space-y-2">
           {messages.map((message, i) => {
             return <ChatItem key={`message_${i}`} message={message} />;
           })}
-          {/* <ChatItem />
-          <ChatItem />
-          <ChatItem />
-          <ChatItem />
-          <ChatItem /> */}
         </div>
       </ScrollArea>
-    </>
+    </div>
   );
 }
 

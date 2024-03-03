@@ -7,9 +7,9 @@ import { Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import "./react-quill-customise.css";
 import { useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
-import "./react-quill-customise.css";
 
 export default function SendMessage() {
   const [value, setValue] = useState("");
@@ -19,21 +19,33 @@ export default function SendMessage() {
   const auth = useSelector((state: AppState) => state.auth);
 
   const handleSendMessage = () => {
+    const message = value.trim();
+    const regex = /(<([^>]+)>)/gi;
+    const result = message.replace(regex, "");
+    if (!result || result == "") {
+      return false;
+    }
     socket.emit("sendMessage", {
       channel: channel.id,
       token: auth.user?.id.toString()!,
-      message: value,
+      message: message,
     });
     setValue("");
   };
 
   return (
-    <div className="relative bg-primary-foreground w-full place-items-end h-[10vh] px-5 !overflow-visible">
+    <div className="relative bg-primary w-full place-items-end h-[10vh] !overflow-visible">
       <ReactQuill
         theme="snow"
         className="w-full"
         value={value}
         onChange={setValue}
+        onKeyUp={(e) => {
+          if (e.key == "Enter" && !e.shiftKey) {
+            handleSendMessage();
+            return false;
+          }
+        }}
         modules={{
           toolbar: [
             ["bold", "italic", "underline", "strike", "blockquote"],

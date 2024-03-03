@@ -11,37 +11,15 @@ interface loadMessagePayload {
   socket: Socket;
 }
 
-const loadMessages = async ({ payload, socket }: loadMessagePayload) => {
-  const chat = await Chat.find({
-    channel: payload.channel,
-  })
-    .populate('channel')
-    .populate('sender');
-  socket.emit('load-messages-fulfilled', chat);
-  return chat;
-};
-
 export const registerChatEvents = (socket: Socket) => {
   socket.on('join-channel', async (payload: string) => {
     socket.join(`channel-${payload}`);
-
-    await loadMessages({
-      payload: { channel: payload },
-      socket,
-    });
-  });
-
-  socket.on('load-messages', async (payload: { payload: loadMessagePayload['payload'] }) => {
-    await loadMessages({
-      payload: payload["payload"],
-      socket,
-    });
-    // socket.broadcast.to(`channel-${payload}`).emit('joined-channel', "user left");
+    socketIO.to(`channel-${payload}`).emit('joined-channel', 'user joined');
   });
 
   socket.on('leave-channel', async (payload: string) => {
     socket.leave(`channel-${payload}`);
-    // socket.broadcast.to(`channel-${payload}`).emit('joined-channel', "user left");
+    socketIO.to(`channel-${payload}`).emit('joined-channel', 'user left');
   });
 
   socket.on('sendMessage', async (payload) => {
@@ -53,8 +31,12 @@ export const registerChatEvents = (socket: Socket) => {
     chat.sender = user;
     chat.channel = payload.channel;
     chat.message = payload.message;
-    chat.save();
-    socket.broadcast.to(`channel-${chat.channel._id}`).emit('message-received', chat.toJSON());
-    logger.info('received a message', chat);
+    chat.save().then(async () => {
+      let message = await Chat.findById(chat.id).populate('sender').populate('channel').exec();
+      socketIO.to(`channel-${payload.channel}`).emit('message-received', message?.toJSON());
+    });
+
+    logger.info('received a message');
+    logger.info(payload.channel);
   });
 };

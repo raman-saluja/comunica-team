@@ -4,11 +4,11 @@ import ChatList from "@/app/chats/components/ChatList";
 import SendMessage from "@/app/chats/components/send-message/SendMessage";
 import ChannelInfo from "@/app/workspaces/layout/components/channel_topbar";
 import { toast } from "@/components/ui/use-toast";
-import { AppState } from "@/redux/store";
 import { socket } from "@/socket/socket";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { newMessageReceived } from "../chats/ChatSlice";
 
 export const loader: LoaderFunction = async ({ params }) => {
   if (!params.channelID || !parseInt(params.channelID!)) {
@@ -26,14 +26,15 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export const Component: React.FC = () => {
-  
   // const socket = useSelector((state: AppState) => state.socket);
 
   const { channel } = useLoaderData() as { channel: ChannelInterface };
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     socket.connect();
-    () => socket.disconnect();
+    // () => socket.disconnect();
   }, []);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export const Component: React.FC = () => {
     return () => {
       socket.emit("leave-channel", channel.id);
     };
-  }, [socket]);
+  }, [socket, channel]);
 
   useEffect(() => {
     socket.on("joined-channel", (payload) => {
@@ -62,21 +63,21 @@ export const Component: React.FC = () => {
     return () => {
       socket.off("joined-channel");
     };
-  }, [socket]);
+  }, [socket.connected]);
 
   useEffect(() => {
-    socket.on("message-received", (chat: any) =>
-      console.log("new message received", chat)
-    );
+    socket.on("message-received", (chat) => {
+      dispatch(newMessageReceived(chat));
+    });
 
     return () => {
       socket.off("message-received");
     };
-  }, [socket]);
+  }, [socket, channel]);
 
   return (
     <>
-      <div className="relative grid grid-flow-row col-span-3 h-screen items-start overflow-x-hidden">
+      <div className="relative grid grid-flow-row w-full h-full items-start overflow-x-hidden">
         <ChannelInfo title={channel.name} />
         <ChatList />
         <SendMessage />

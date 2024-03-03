@@ -4,6 +4,7 @@ import m2s from 'mongoose-to-swagger';
 import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
 import { ChannelInterface } from '@modules/channels/ChannelModel';
 import { UserInterface } from '@modules/user/UserModel';
+import { defaultToJSONMethod } from '@common/utils/db';
 
 export interface ChatInterface {
   _id: Schema.Types.ObjectId;
@@ -20,6 +21,7 @@ export const ChatSchema = new Schema<ChatInterface>({
   created_at: { type: Date, default: () => new Date() },
 });
 
+ChatSchema.set('toJSON', defaultToJSONMethod());
 
 export const Chat = mongoose.model<ChatInterface>('Chat', ChatSchema);
 export const swaggerSchema = m2s(Chat);
