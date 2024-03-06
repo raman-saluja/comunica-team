@@ -5,7 +5,7 @@ import { defaultToJSONMethod } from '@common/utils/db';
 import { UserInterface } from '@modules/user/UserModel';
 import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
 
-enum Roles {
+export enum Roles {
   Owner = 'owner',
   Member = 'member',
 }

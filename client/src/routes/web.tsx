@@ -78,6 +78,22 @@ const AppRoutes: RouteObject[] = [
     element: <EmailFailedConfirm />,
   },
   {
+    loader: async ({ request: _request, params }: LoaderFunctionArgs) => {
+      if (!localStorage.getItem(AUTH_TOKEN)) {
+        return redirect(`/login?action=/join/${params.id}`);
+      }
+      const workspace = await api.get<APIResponse<{}>>(
+        `workspaces/${params.id}/join`
+      );
+      if (workspace.data && workspace.data.success) {
+        return redirect(`/workspaces/${params.id}`);
+      }
+      return {};
+    },
+    Component: NoMatch,
+    path: "join/:id",
+  },
+  {
     Component: DefaultLayout,
     loader: loaderForProtected,
     // errorElement: <NoMatch />,

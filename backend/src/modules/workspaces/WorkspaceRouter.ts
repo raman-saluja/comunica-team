@@ -1,10 +1,11 @@
 import express, { Request, Response, Router } from 'express';
 import passport from 'passport';
 
-import { UserInterface } from '@modules/user/UserModel';
-import { WorkspaceUsers } from '@modules/workspace_users/WorkspaceUsersModel';
+import { User, UserInterface } from '@modules/user/UserModel';
+import { Roles, WorkspaceUsers } from '@modules/workspace_users/WorkspaceUsersModel';
 
 import { Workspace, WorkspaceInterface } from './WorkspaceModel';
+import mongoose from 'mongoose';
 
 export const WorkspaceRouter: Router = (() => {
   const router = express.Router();
@@ -49,25 +50,40 @@ export const WorkspaceRouter: Router = (() => {
     '/:workspaceId/join',
     passport.authenticate('jwt', { session: false }),
     async (request: Request, response: Response) => {
-      const workspace = await Workspace.findById(request.params.workspaceId);
-      if (!workspace) {
-        return response.api.error({}, 500, 'Something went wrong');
+      try {
+        if (!request.params.workspaceId || !mongoose.Types.ObjectId.isValid(request.params.workspaceId)) {
+          return response.api.error({}, 404, 'Invalid workspace');
+        }
+
+        const workspace = await Workspace.findById(request.params.workspaceId);
+        if (!workspace) {
+          return response.api.error({}, 404, 'Invalid workspace');
+        }
+
+        const user_id = (request.user as UserInterface).id;
+        const user = await User.findById(user_id);
+        if(!user){
+          return response.api.error({}, 400, 'unauthorised');
+        }
+
+        const exists = await WorkspaceUsers.findOne({ user: user_id, workspace: workspace });
+
+        if (!exists) {
+          const create = await new WorkspaceUsers();
+          create.role = Roles.Member;
+          create.user = user;
+          create.workspace = workspace as WorkspaceInterface;
+          create.save();
+        }
+
+        const workspaceUser = await WorkspaceUsers.findOne({ user: user_id, workspace: workspace })
+          .populate('user')
+          .populate('workspace');
+
+        return response.api.success(workspaceUser?.toJSON());
+      } catch (error) {
+        return response.api.error(error as object, 500, 'Something went wrong');
       }
-
-      const exists = await WorkspaceUsers.findOne({ user: request.user, workspace: workspace });
-
-      if (!exists) {
-        const create = await new WorkspaceUsers();
-        create.user = request.user as UserInterface;
-        create.workspace = workspace as WorkspaceInterface;
-        create.save();
-      }
-
-      const workspaceUser = await WorkspaceUsers.findOne({ user: request.user, workspace: workspace })
-        .populate('user')
-        .populate('workspace');
-
-      return response.api.success(workspaceUser?.toJSON());
     }
   );
 

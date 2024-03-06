@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChannelInterface } from "@/app/channels/ChannelInterface";
 import { CreateChannelDialog } from "@/app/channels/create/CreateChannelDialog";
+import { InviteDialog } from "../invite/InviteDialog";
 
 export interface SidebarProps {
   workspace: Workspace;
@@ -98,9 +99,10 @@ export function Sidebar({ ...props }: SidebarProps) {
               <small className="text-sm font-bold leading-none">
                 Team Members
               </small>
-              <Button type="button" size={"sm"} variant={"default"}>
+              <InviteDialog workspace={workspace} />
+              {/* <Button type="button" size={"sm"} variant={"default"}>
                 <Plus size={10} className="mr-2" /> invite
-              </Button>
+              </Button> */}
             </div>
             <div className="w-full grid grid-flow-row">
               {team.map((member) => {

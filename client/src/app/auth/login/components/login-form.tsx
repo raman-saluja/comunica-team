@@ -23,7 +23,7 @@ import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { login } from "@/app/auth/AuthSlice";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -46,6 +46,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     setIsLoading(true);
@@ -59,7 +60,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         if (res.data.success) {
           localStorage.setItem("token", res.data.data.token);
           dispatch(login(res.data.data));
-          navigate("/dashboard");
+          if (searchParams.has("action")) {
+            navigate(searchParams.get("action") as string);
+          } else {
+            navigate("/dashboard");
+          }
         } else {
           toast({
             variant: "destructive",
