@@ -28,7 +28,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { z } from "zod";
-import { Plus } from "lucide-react";
+import { Facebook, FacebookIcon, Plus } from "lucide-react";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {
   workspace: Workspace;
@@ -45,6 +45,7 @@ export function InviteDialog({ workspace }: CreateWorkspaceDialogProps) {
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [copy, setCopy] = useState("copy");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -53,7 +54,7 @@ export function InviteDialog({ workspace }: CreateWorkspaceDialogProps) {
           <Plus size={15} className="mr-2" /> invite
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Invite your team</DialogTitle>
           <DialogDescription>
@@ -61,23 +62,33 @@ export function InviteDialog({ workspace }: CreateWorkspaceDialogProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <pre>
-              <code>{`${import.meta.env.VITE_PUBLIC_URL}${
-                import.meta.env.BASE_URL
-              }join/${workspace.id}`}</code>
-            </pre>
+          <div className="flex w-full flex-row gap-4 items-center justify-between bg-black pl-4 rounded">
+            <p className="text-sm">{`${import.meta.env.VITE_PUBLIC_URL}${
+              import.meta.env.BASE_URL
+            }join/${workspace.id}`}</p>
+            <Button
+              type="button"
+              onClick={() => {
+                window.navigator.clipboard.writeText(
+                  `${import.meta.env.VITE_PUBLIC_URL}${
+                    import.meta.env.BASE_URL
+                  }join/${workspace.id}`
+                );
+                setCopy("copied");
+                setTimeout(() => setCopy("copy"), 2000);
+              }}
+              variant={"secondary"}
+              size={"sm"}
+            >
+              {copy}
+            </Button>
           </div>
         </div>
         <DialogFooter className="sm:justify-between">
+          <div></div>
           <DialogClose asChild>
-            <Button disabled={isLoading} type="button" variant={"default"}>
+            <Button disabled={isLoading} type="button" variant={"secondary"}>
               Done
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
             </Button>
           </DialogClose>
         </DialogFooter>
