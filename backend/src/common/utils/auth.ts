@@ -49,3 +49,7 @@ export async function genPassword(password: string) {
 
 export const wrapMiddlewareForSocketIo = (middleware: any) => (socket: any, next: any) =>
   middleware(socket.request, {}, next);
+
+export const authUser = (user: any): UserInterface => {
+  return user as UserInterface;
+};
