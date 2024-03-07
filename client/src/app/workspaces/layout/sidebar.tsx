@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { avatarFallBackName, cn } from "@/lib/utils";
-import { ArrowLeftRightIcon, ChevronLeft, Plus } from "lucide-react";
+import { ArrowLeftRightIcon, ChevronLeft, Plus, X } from "lucide-react";
 
 import { APIResponse, api } from "@/api/api";
 import {
@@ -100,14 +100,11 @@ export function Sidebar({ ...props }: SidebarProps) {
                 Team Members
               </small>
               <InviteDialog workspace={workspace} />
-              {/* <Button type="button" size={"sm"} variant={"default"}>
-                <Plus size={10} className="mr-2" /> invite
-              </Button> */}
             </div>
             <div className="w-full grid grid-flow-row">
               {team.map((member) => {
                 return (
-                  <div className="cursor-pointer flex items-center p-4 space-x-4">
+                  <div className="relative group cursor-pointer flex items-center p-4 space-x-4">
                     <Avatar className="w-7 h-7">
                       <AvatarImage src="/avatars/01.png" />
                       <AvatarFallback>
@@ -122,6 +119,16 @@ export function Sidebar({ ...props }: SidebarProps) {
                         {member.role}
                       </p>
                     </div>
+                    {/* <div className="block absolute right-0 top-5">
+                      <Button
+                        type="button"
+                        variant={"ghost"}
+                        className="text-destructive"
+                        size={"xs"}
+                      >
+                        <X size={12} />
+                      </Button>
+                    </div> */}
                   </div>
                 );
               })}
@@ -131,9 +138,12 @@ export function Sidebar({ ...props }: SidebarProps) {
             <div className="flex justify-center">
               <Settings />
             </div>
-            <Button asChild type="button" variant={"outline"}>
-              <Link to={"/"}>workspaces</Link>
+            <Button type="button" variant={"outline"}>
+              Manage Team Members
             </Button>
+            {/* <Button asChild type="button" variant={"outline"}>
+              <Link to={"/"}>workspaces</Link>
+            </Button> */}
           </div>
         </CardContent>
       </div>

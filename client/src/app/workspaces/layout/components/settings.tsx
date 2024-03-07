@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,9 +27,22 @@ export function Settings() {
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col py-4 gap-4">
-          <div className="grid flex-1 gap-2">
+          <div className="grid flex-1 gap-2 mb-4">
             <Label htmlFor="link">Workspace Name</Label>
-            <Input id="link" defaultValue={workspaces[0].name} readOnly />
+            <Input id="link" defaultValue={workspaces[0].name} />
+          </div>
+          <div className="grid flex-1 gap-2 mb-4">
+            <Button
+              className="bor "
+              variant={"outline-destructive"}
+              onClick={() =>
+                window.confirm(
+                  "are you sure you want to delete this workspace ?"
+                )
+              }
+            >
+              Delete Workspace
+            </Button>
           </div>
         </div>
         <DialogFooter className="sm:justify-between">
