@@ -5,11 +5,10 @@ import { User, UserInterface } from '@modules/user/UserModel';
 import { Roles, WorkspaceUsers } from '@modules/workspace_users/WorkspaceUsersModel';
 
 import { authUser } from '@common/utils/auth';
-import mongoose from 'mongoose';
-import { Workspace, WorkspaceInterface } from './WorkspaceModel';
 import { Channel } from '@modules/channels/ChannelModel';
 import { Chat } from '@modules/chats/ChatModel';
-import { request } from 'http';
+import mongoose from 'mongoose';
+import { Workspace, WorkspaceInterface } from './WorkspaceModel';
 
 export const WorkspaceRouter: Router = (() => {
   const router = express.Router();
@@ -205,7 +204,6 @@ export const WorkspaceRouter: Router = (() => {
 
     const workspace = await Workspace.findOne({
       _id: request.params.workspaceId,
-      created_by: authUser(request.user).id,
     });
     if (!workspace) {
       return response.api.error({}, 404, 'workspace not found');

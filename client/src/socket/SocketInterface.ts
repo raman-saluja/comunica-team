@@ -8,7 +8,6 @@ export interface ServerToClientEvents {
   notification: (message: string) => void;
   "message-received": (message: ChatMessageInterface) => void;
   "joined-channel": (participant_id: string) => void;
-  "load-messages-fulfilled": (messages: ChatMessageInterface[]) => void;
 }
 
 export interface ClientToServerEvents {

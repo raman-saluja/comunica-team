@@ -1,17 +1,16 @@
 import { ChannelInterface } from "@/app/channels/ChannelInterface";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { AppState } from "@/redux/store";
 import { socket } from "@/socket/socket";
 import { Send } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./react-quill-customise.css";
 import { useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
+import "./react-quill-customise.css";
 
-export default function SendMessage() {
+export default function SendMessage({ callback }: { callback: () => void }) {
   const [value, setValue] = useState("");
 
   const { channel } = useLoaderData() as { channel: ChannelInterface };
@@ -30,6 +29,7 @@ export default function SendMessage() {
       token: auth.user?.id.toString()!,
       message: message,
     });
+    setTimeout(callback, 500);
     setValue("");
   };
 

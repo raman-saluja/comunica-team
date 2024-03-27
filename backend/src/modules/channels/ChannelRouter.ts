@@ -15,8 +15,8 @@ export const ChannelRouter: Router = (() => {
   router.use(passport.authenticate('jwt', { session: false }));
 
   router.use(async (request: Request, response: Response, next: NextFunction) => {
-    if (!request.query.workspace || !mongoose.isValidObjectId(request.query.workspace)) {
-      return response.api.error({}, 400, 'workspace required');
+    if (!request.query.workspace && !mongoose.isValidObjectId(request.query.workspace)) {
+      return response.api.error({ ...request.query }, 400, 'workspace required');
     }
 
     const workspace_user = await WorkspaceUsers.findOne({

@@ -9,16 +9,20 @@ import { Chat } from './ChatModel';
 export const registerChatEvents = (socket: Socket) => {
   socket.on('join-channel', async (payload: string) => {
     socket.join(`channel-${payload}`);
-    socketIO.to(`channel-${payload}`).emit('joined-channel', 'user joined');
+    socketIO.to(`channel-${payload}`).emit('joined-channel', payload);
   });
 
   socket.on('leave-channel', async (payload: string) => {
     socket.leave(`channel-${payload}`);
-    socketIO.to(`channel-${payload}`).emit('joined-channel', 'user left');
+    socketIO.to(`channel-${payload}`).emit('left-channel', 'user left');
   });
 
   socket.on('sendMessage', async (payload) => {
     const user = await User.findById(payload.token!);
+
+    const rooms = socketIO.of('/').adapter.rooms;
+    console.log(rooms);
+    
 
     if (!user) return;
 

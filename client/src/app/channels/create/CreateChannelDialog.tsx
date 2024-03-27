@@ -27,9 +27,9 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { Plus } from "lucide-react";
 import { z } from "zod";
 import { ChannelInterface } from "../ChannelInterface";
-import { Plus } from "lucide-react";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {
   workspace: Workspace;
@@ -53,14 +53,24 @@ export function CreateChannelDialog({ workspace }: CreateWorkspaceDialogProps) {
     setIsLoading(true);
 
     api
-      .post<APIResponse<ChannelInterface>>(`channels`, {
-        ...data,
-        workspace_id: workspace.id,
-      })
+      .post<APIResponse<ChannelInterface>>(
+        `channels`,
+        {
+          ...data,
+          workspace_id: workspace.id,
+        },
+        {
+          params: {
+            workspace: workspace.id,
+          },
+        }
+      )
       .then((res) => {
         if (res.data.success) {
           setOpen(false);
-          navigate(`/workspaces/${workspace.id}/channel/${res.data.data.id}`);
+          navigate(`/workspaces/${workspace.id}/channel/${res.data.data.id}`, {
+            replace: true,
+          });
         } else {
           toast({
             variant: "destructive",
