@@ -1,5 +1,3 @@
-import { APIResponse, api } from "@/api/api";
-import { Workspace } from "@/app/dashboard/DashboardPage";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -20,52 +17,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
-import { Plus } from "lucide-react";
+import { store } from "@/redux/store";
+import { DialogProps } from "@radix-ui/react-dialog";
 import { z } from "zod";
 import { ChannelInterface } from "../ChannelInterface";
-import { DialogProps } from "@radix-ui/react-dialog";
-import { store } from "@/redux/store";
-import { createChannel, setActiveChannel } from "../ChannelSlice";
-export const CreateChannelSchema = z.object({
+import { deleteChannel, updateChannel } from "../ChannelSlice";
+import { Trash } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+export const EditChannelSchema = z.object({
   name: z.string(),
 });
 
-type ChannelForm = z.infer<typeof CreateChannelSchema>;
+type ChannelForm = z.infer<typeof EditChannelSchema>;
 
-export default function CreateChannelDialog(
-  props: DialogProps & { workspace: Workspace }
+export function EditChannelDialog(
+  props: DialogProps & { channel: ChannelInterface }
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<ChannelForm>({
-    resolver: zodResolver(CreateChannelSchema),
+    resolver: zodResolver(EditChannelSchema),
   });
-
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ChannelForm> = async (data) => {
     setIsLoading(true);
 
     store
       .dispatch(
-        createChannel({
+        updateChannel({
+          id: props.channel.id,
           name: data.name,
         })
       )
-      .then((res: any) => {
-        navigate(
-          `/workspaces/${props.workspace.id}/channel/${res.payload.id}`,
-          { replace: true }
-        );
-        store.dispatch(setActiveChannel(res.payload.id));
+      .finally(() => {
         setIsLoading(false);
-        props.onOpenChange && props.onOpenChange(false);
+        form.reset();
+        if (props.onOpenChange) props.onOpenChange(false);
       });
   };
 
@@ -74,13 +64,34 @@ export default function CreateChannelDialog(
       <Dialog {...props}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Create Channel</DialogTitle>
-            <DialogDescription>
-              Anyone who has this link will be able to view this.
-            </DialogDescription>
+            <DialogTitle>Edit Channel</DialogTitle>
           </DialogHeader>
           <div className="flex items-center space-x-2">
             <div className="grid flex-1 gap-2">
+              <Button
+                disabled={isLoading}
+                type="button"
+                onClick={() => {
+                  if (
+                    confirm("Are you sure you want to delete this channel?")
+                  ) {
+                    setIsLoading(true);
+                    store
+                      .dispatch(deleteChannel(props.channel.id))
+                      .finally(() => {
+                        if (props.onOpenChange) props.onOpenChange(false);
+                        toast({
+                          variant: "destructive",
+                          title: "Channel deleted",
+                        });
+                        setIsLoading(false);
+                      });
+                  }
+                }}
+                variant={"destructive"}
+              >
+                <Trash size={15} className="mr-2" /> Delete Channel
+              </Button>
               <FormField
                 control={form.control}
                 name="name"
@@ -93,6 +104,7 @@ export default function CreateChannelDialog(
                         autoComplete="name"
                         autoCorrect="off"
                         {...field}
+                        defaultValue={props.channel.name}
                       />
                     </FormControl>
                     <FormMessage />
@@ -112,6 +124,7 @@ export default function CreateChannelDialog(
                 Save
               </Button>
             </DialogClose>
+
             <DialogClose asChild>
               <Button type="button" variant="secondary">
                 Close

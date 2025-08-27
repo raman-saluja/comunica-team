@@ -28,6 +28,9 @@ const logger = pino({ name: 'server start' });
 const app: Express = express();
 const corsOrigin = getCorsOrigin();
 
+// serve "uploads" folder statically
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 db();
 
 // Middlewares

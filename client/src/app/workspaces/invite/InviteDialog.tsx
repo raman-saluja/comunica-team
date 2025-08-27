@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 
 import { z } from "zod";
 import { Facebook, FacebookIcon, Plus } from "lucide-react";
+import { DialogProps } from "@radix-ui/react-dialog";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {
   workspace: Workspace;
@@ -40,20 +41,15 @@ export const CreateChannelSchema = z.object({
 
 type ChannelForm = z.infer<typeof CreateChannelSchema>;
 
-export function InviteDialog({ workspace }: CreateWorkspaceDialogProps) {
-  const [open, setOpen] = useState(false);
+export function InviteDialog(props: DialogProps & CreateWorkspaceDialogProps) {
+  const workspace = props.workspace;
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [copy, setCopy] = useState("copy");
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" size={"sm"} variant={"default"}>
-          <Plus size={15} className="mr-2" /> invite
-        </Button>
-      </DialogTrigger>
+    <Dialog {...props}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Invite your team</DialogTitle>

@@ -36,6 +36,8 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     newMessageReceived: (state, { payload }) => {
+      if (!state[payload.channel.id]) state[payload.channel.id] = [];
+
       state[payload.channel.id].push(payload);
       return state;
     },

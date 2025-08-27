@@ -10,15 +10,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { Edit, LogOut, Pencil, PencilLine, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { EditChannelDialog } from "../../create/EditChannelDialog";
+import { ChannelInterface } from "../../ChannelInterface";
+import { useEffect, useState } from "react";
+import { AppState } from "@/redux/store";
 
 export interface ChannelInfoProps {
   title: string;
 }
 
-function ChannelInfo({ ...props }: ChannelInfoProps) {
+function ChannelInfo({ channel }: { channel?: ChannelInterface }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,10 +33,44 @@ function ChannelInfo({ ...props }: ChannelInfoProps) {
     navigate("/login");
   };
 
+  const activeWorkspace = useSelector(
+    (state: AppState) => state.workspace.activeWorkspace
+  );
+
+  const [showEdit, setShowEdit] = useState(false);
+
   return (
     <div className="w-full px-4 py-4 h-[10vh]">
+      {channel ? (
+        <EditChannelDialog
+          open={showEdit}
+          onOpenChange={setShowEdit}
+          channel={channel}
+        />
+      ) : (
+        ""
+      )}
       <div className="flex items-center justify-between">
-        <h4 className="font-bold tracking-tight">{props.title}</h4>
+        <div className="flex items-center">
+          {channel ? (
+            <>
+              <h4 className="font-bold tracking-tight">{channel?.name}</h4>
+              {activeWorkspace?.created_by.id === auth?.user?.id ? (
+                <a
+                  href="#"
+                  onClick={() => setShowEdit(true)}
+                  className="ml-3 text-muted-foreground"
+                >
+                  <PencilLine size={16} />
+                </a>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
+        </div>
         <div className="place-items-end mr-5">
           <DropdownMenu>
             <DropdownMenuTrigger>

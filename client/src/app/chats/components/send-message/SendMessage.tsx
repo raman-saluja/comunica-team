@@ -18,7 +18,7 @@ export default function SendMessage({ callback }: { callback: () => void }) {
   const auth = useSelector((state: AppState) => state.auth);
 
   const handleSendMessage = () => {
-    const message = value.trim();
+    const message = value.trim().replace("<p><br></p>", "");
     const regex = /(<([^>]+)>)/gi;
     const result = message.replace(regex, "");
     if (!result || result == "") {
@@ -27,7 +27,7 @@ export default function SendMessage({ callback }: { callback: () => void }) {
     socket.emit("sendMessage", {
       channel: channel.id,
       token: auth.user?.id.toString()!,
-      message: message,
+      message,
     });
     setTimeout(callback, 500);
     setValue("");
@@ -52,6 +52,9 @@ export default function SendMessage({ callback }: { callback: () => void }) {
             [{ list: "ordered" }, { list: "bullet" }],
             ["clean"],
           ],
+          clipboard: {
+            matchVisual: false,
+          },
         }}
       />
       <Button

@@ -29,6 +29,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { z } from "zod";
+import { DialogProps } from "@radix-ui/react-dialog";
 interface CreateWorkspaceDialogProps
   extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -38,7 +39,7 @@ export const CreateWorkspaceSchema = z.object({
 
 type WorkspaceForm = z.infer<typeof CreateWorkspaceSchema>;
 
-function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
+function CreateWorkspaceDialog(props: DialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const form = useForm<WorkspaceForm>({
@@ -54,6 +55,7 @@ function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
       )
       .then((res) => {
         if (res.data.success) {
+          if (props.onOpenChange) props.onOpenChange(false);
           navigate(`/workspaces/${res.data.data.id}`);
         } else {
           toast({
@@ -73,11 +75,6 @@ function CreateWorkspaceDialog(props: CreateWorkspaceDialogProps) {
   return (
     <Form {...form}>
       <Dialog {...props}>
-        <DialogTrigger asChild>
-          <Button variant="default" className="w-full">
-            Create Workspace
-          </Button>
-        </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{"Set Up Your Team's Workspace"}</DialogTitle>

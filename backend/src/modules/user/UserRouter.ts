@@ -15,7 +15,6 @@ export const UserRouter: Router = (() => {
       if (!user) {
         return response.api.error(request.user, 404, 'invalid user');
       }
-
       const workspaces = await WorkspaceUsers.find({ user: user.id }).populate('user').populate('workspace');
 
       if (user) {

@@ -105,7 +105,9 @@ export const ChannelRouter: Router = (() => {
         .deleteOne()
         .then(() => {
           // generate jwt token using passport authenticate
-          response.api.success({});
+          response.api.success({
+            id: channel.id,
+          });
         })
         .catch((e) => {
           response.api.error(e.errors, 400, e.message);

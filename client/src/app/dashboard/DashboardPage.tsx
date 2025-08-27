@@ -1,10 +1,15 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { APIResponse, api } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
+import {
+  Link,
+  LoaderFunction,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import CreateWorkspaceDialog from "../workspaces/create/CreateWorkspaceDialog";
 import { UserInterface } from "../users/UserInterface";
 
@@ -13,6 +18,13 @@ export interface Workspace {
   name: string;
   description: string;
   workspace: string;
+  created_by: {
+    email: string;
+    id: string;
+    name: string;
+    status: "active" | "inactive";
+    verify: boolean;
+  };
 }
 
 export interface WorkspaceUserInterface {
@@ -23,7 +35,7 @@ export interface WorkspaceUserInterface {
 }
 
 export const loader: LoaderFunction = async () => {
-  const res = await api.get<APIResponse<WorkspaceUserInterface>>(
+  const res = await api.get<APIResponse<WorkspaceUserInterface[]>>(
     "users/workspaces"
   );
   return { workspaces: res.data.data };
@@ -33,6 +45,12 @@ export const Component: React.FC = () => {
   const { workspaces } = useLoaderData() as {
     workspaces: WorkspaceUserInterface[];
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/workspaces/${workspaces[0].workspace.id}`);
+  }, []);
 
   return (
     <div className="flex w-full h-screen items-center justify-center">
@@ -49,7 +67,6 @@ export const Component: React.FC = () => {
             </CardFooter>
           </Card>
         ))}
-        <CreateWorkspaceDialog />
       </div>
     </div>
   );

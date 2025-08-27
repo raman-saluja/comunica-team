@@ -52,9 +52,9 @@ const AppRoutes: RouteObject[] = [
     path: "email/verify",
     loader: async ({ request }: LoaderFunctionArgs) => {
       const url = new URL(request.url);
-      const token = url.searchParams.get("token");
+      const secret = url.searchParams.get("token");
 
-      if (!token) {
+      if (!secret) {
         console.log("not a valid token");
         return redirect("/login");
       }
@@ -62,7 +62,7 @@ const AppRoutes: RouteObject[] = [
       const res = await api<APIResponse<{ token: string }>>({
         url: "auth/verify",
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Bearer " + secret,
         },
       })
         .then((res) => res.data.data.token)
@@ -108,11 +108,11 @@ const AppRoutes: RouteObject[] = [
         children: [
           {
             path: "/workspaces/:id",
-            lazy: () => import("@/app/workspaces/ViewWorkspacePage"),
+            lazy: () => import("@/app/workspaces/view/ViewWorkspacePage"),
           },
           {
             path: "/workspaces/:id/channel/:channelID",
-            lazy: () => import("@/app/channels/ViewChannelPage"),
+            lazy: () => import("@/app/channels/view/ViewChannelPage"),
           },
         ],
       },

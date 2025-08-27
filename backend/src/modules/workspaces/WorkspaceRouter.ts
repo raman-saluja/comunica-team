@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 
 import { User, UserInterface } from '@modules/user/UserModel';
-import { Roles, WorkspaceUsers } from '@modules/workspace_users/WorkspaceUsersModel';
+import { Roles, WorkspaceUsers, WorkspaceUsersInterface } from '@modules/workspace_users/WorkspaceUsersModel';
 
 import { authUser } from '@common/utils/auth';
 import { Channel } from '@modules/channels/ChannelModel';
@@ -103,7 +103,13 @@ export const WorkspaceRouter: Router = (() => {
     workspace
       .deleteOne()
       .then(async () => {
-        response.api.success({}, 200, 'deleted');
+        response.api.success(
+          {
+            id: request.params.workspaceId,
+          },
+          200,
+          'deleted'
+        );
       })
       .catch((e) => {
         response.api.error(e.errors, 400, e.message);
@@ -138,8 +144,13 @@ export const WorkspaceRouter: Router = (() => {
       });
   });
 
-  router.get('/', async (_request: Request, response: Response) => {
-    const workspaces = await Workspace.find().populate('created_by');
+  router.get('/', async (request: Request, response: Response) => {
+    const user_id = (request.user as UserInterface).id;
+    // Step 1
+    const workspaceUsers = await WorkspaceUsers.find({ user: user_id });
+    const workspaceIds = workspaceUsers.map((wu) => wu.workspace);
+
+    const workspaces = await Workspace.find({ _id: { $in: workspaceIds } }).populate('created_by');
 
     if (workspaces) {
       return response.api.success(workspaces);

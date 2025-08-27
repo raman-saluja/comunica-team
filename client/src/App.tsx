@@ -11,7 +11,7 @@ function App() {
   return (
     <Provider store={store}>
       <React.Suspense fallback={<Loading />}>
-        <div className={cn("min-h-screen bg-background font-sans antialiased")}>
+        <div className={cn("min-h-screen bg-black font-sans antialiased")}>
           <Outlet />
         </div>
       </React.Suspense>
