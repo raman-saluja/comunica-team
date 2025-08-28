@@ -9,20 +9,22 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { avatarFallBackName, cn } from "@/lib/utils";
 
-import { APIResponse, api } from "@/api/api";
 import { AuthInterface } from "@/app/auth/AuthSlice";
 import { ChannelInterface } from "@/app/channels/ChannelInterface";
+import { setActiveChannel, setAllChannels } from "@/app/channels/ChannelSlice";
 import CreateChannelDialog from "@/app/channels/create/CreateChannelDialog";
-import { WorkspaceUserInterface } from "@/app/dashboard/DashboardPage";
+import {
+  removeTeamMember,
+  setAllTeamMembers,
+} from "@/app/teams/TeamMembersSlice";
 import WorkspaceSettings from "@/app/workspaces/settings/WorkspaceSettings";
 import { Badge } from "@/components/ui/badge";
 import { AppState, store } from "@/redux/store";
-import { Hash, Plus, SettingsIcon } from "lucide-react";
+import { Hash, Plus, SettingsIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { InviteDialog } from "../../invite/InviteDialog";
-import { setActiveChannel, setAllChannels } from "@/app/channels/ChannelSlice";
 
 export interface SidebarProps {}
 
@@ -36,19 +38,11 @@ export function Sidebar({ ...props }: SidebarProps) {
   );
 
   // const [channels, setChannels] = useState<ChannelInterface[]>([]);
-  const [team, setTeam] = useState<WorkspaceUserInterface[]>([]);
+  // const [team, setTeam] = useState<WorkspaceUserInterface[]>([]);
   const channels =
     useSelector((state: AppState) => state.channel).channels || [];
-
-  const getChannels = async () =>
-    await api.get<APIResponse<ChannelInterface[]>>(
-      `channels?workspace=${activeWorkspace?.id}`
-    );
-
-  const getTeamMembers = async () =>
-    await api.get<APIResponse<WorkspaceUserInterface[]>>(
-      `workspaces/${activeWorkspace?.id}/users`
-    );
+  const team =
+    useSelector((state: AppState) => state.teamMembers.members) || [];
 
   const navigate = useNavigate();
   const params = useParams();
@@ -60,14 +54,10 @@ export function Sidebar({ ...props }: SidebarProps) {
   const [showCreateChannelDialog, setShowCreateChannelDialog] = useState(false);
   const [showInviteDialog, setShowInviteDialog] = useState(false);
 
-  // if (!channel_id) return <></>;
-
   useEffect(() => {
     if (!activeWorkspace) return;
     store.dispatch(setAllChannels());
-    getTeamMembers().then(({ data }) => {
-      setTeam(data.data);
-    });
+    store.dispatch(setAllTeamMembers());
   }, [activeWorkspace?.id]);
 
   useEffect(() => {
@@ -81,6 +71,11 @@ export function Sidebar({ ...props }: SidebarProps) {
     navigate(`workspaces/${activeWorkspace?.id}/channel/${id}`, {
       replace: true,
     });
+  };
+
+  const handleRemoveTeamMember = (memberId: string) => {
+    if (!confirm("Are you sure you want to remove this member?")) return;
+    store.dispatch(removeTeamMember(memberId));
   };
 
   return (
@@ -196,7 +191,7 @@ export function Sidebar({ ...props }: SidebarProps) {
             <div className="w-full grid grid-flow-row">
               {team.map((member) => {
                 return (
-                  <div className="relative group cursor-pointer flex items-center p-4 space-x-4">
+                  <div className="relative group flex items-center p-4 space-x-4">
                     <Avatar className="w-7 h-7">
                       <AvatarImage src="/avatars/01.png" />
                       <AvatarFallback>
@@ -211,6 +206,20 @@ export function Sidebar({ ...props }: SidebarProps) {
                         {member.role}
                       </p>
                     </div>
+                    {activeWorkspace?.created_by.id === auth?.user?.id &&
+                    auth?.user?.id != member.user.id ? (
+                      <Button
+                        type="button"
+                        className="absolute opacity-0 group-hover:opacity-100 transition right-2 text-red-500 hover:text-red-700"
+                        variant={"ghost"}
+                        size={"xs"}
+                        onClick={() => handleRemoveTeamMember(member.user.id)}
+                      >
+                        <X size={15} />
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })}
@@ -228,13 +237,13 @@ export function Sidebar({ ...props }: SidebarProps) {
                 ""
               )}
             </div>
-            {activeWorkspace?.created_by.id === auth?.user?.id ? (
+            {/* {activeWorkspace?.created_by.id === auth?.user?.id ? (
               <Button type="button" variant={"outline"}>
                 Manage Team Members
               </Button>
             ) : (
               ""
-            )}
+            )} */}
             {/* <Button asChild type="button" variant={"outline"}>
               <Link to={"/"}>workspaces</Link>
             </Button> */}

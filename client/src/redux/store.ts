@@ -4,6 +4,7 @@ import authReducer from "@/app/auth/AuthSlice";
 import chatsReducer from "@/app/chats/ChatSlice";
 import workspaceReducer from "@/app/workspaces/WorkspaceSlice";
 import channelReducer from "@/app/channels/ChannelSlice";
+import teamMemberReducer from "@/app/teams/TeamMembersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     workspace: workspaceReducer,
     channel: channelReducer,
     chats: chatsReducer,
+    teamMembers: teamMemberReducer,
   },
 });
 

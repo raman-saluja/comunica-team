@@ -225,6 +225,44 @@ export const WorkspaceRouter: Router = (() => {
     return response.api.success(workspaceUser);
   });
 
+  router.get('/:workspaceId/users/:userId/remove', async (request: Request, response: Response) => {
+    try {
+      if (!request.params.workspaceId || !mongoose.Types.ObjectId.isValid(request.params.workspaceId)) {
+        return response.api.error({}, 404, 'Invalid workspace');
+      }
+
+      const workspace = await Workspace.findById(request.params.workspaceId);
+      if (!workspace) {
+        return response.api.error({}, 404, 'Invalid workspace');
+      }
+
+      const user_id = request.params.userId;
+      const user = await User.findById(user_id);
+
+      console.log('user', user);
+
+      if (!user) {
+        return response.api.error({}, 400, 'user not found');
+      }
+
+      const exists = await WorkspaceUsers.findOne({ user: user_id, workspace: workspace });
+
+      if (exists) {
+        await exists.deleteOne();
+      }
+
+      return response.api.success(
+        {
+          id: user_id,
+        },
+        200,
+        'removed'
+      );
+    } catch (error) {
+      return response.api.error(error as object, 500, 'Something went wrong');
+    }
+  });
+
   router.get('/:workspaceId/leave', async (request: Request, response: Response) => {
     try {
       if (!request.params.workspaceId || !mongoose.Types.ObjectId.isValid(request.params.workspaceId)) {
