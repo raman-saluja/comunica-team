@@ -4,7 +4,6 @@ import m2s from 'mongoose-to-swagger';
 import { defaultToJSONMethod } from '@common/utils/db';
 import { UserInterface } from '@modules/user/UserModel';
 import { WorkspaceInterface } from '@modules/workspaces/WorkspaceModel';
-import { authUser } from '@common/utils/auth';
 
 export enum Roles {
   Owner = 'owner',

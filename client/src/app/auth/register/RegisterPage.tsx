@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export default function RegisterPage() {
   return (
     <>
-      <div className="container relative h-[800px] flex-col items-center justify-center  grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="container relative h-screen flex-col items-center justify-center  grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div className="absolute md:hidden left-4 top-5 z-20 flex items-center text-sm font-medium">
           <svg
             xmlns="http://www.w3.org/2000/svg"

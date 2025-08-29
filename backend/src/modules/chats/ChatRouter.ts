@@ -14,10 +14,10 @@ if (!fs.existsSync(uploadsDir)) {
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, uploadsDir);
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     // Generate unique filename: timestamp_randomString.extension
     const uniqueSuffix = Date.now() + '_' + Math.round(Math.random() * 1e9);
     const extension = path.extname(file.originalname);
@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 });
 
 // File filter to only allow images
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (_req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   // Check if file is an image
   if (file.mimetype.startsWith('image/')) {
     cb(null, true);
@@ -120,7 +120,7 @@ export const ChatRouter: Router = (() => {
   );
 
   // Error handling middleware for multer
-  const handleMulterError = (error: any, req: Request, res: Response, next: any) => {
+  const handleMulterError = (error: any, _req: Request, res: Response, _next: any) => {
     if (error instanceof multer.MulterError) {
       if (error.code === 'LIMIT_FILE_SIZE') {
         return res.api.error({}, 400, 'File size too large. Maximum size is 10MB.');

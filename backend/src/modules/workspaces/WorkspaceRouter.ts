@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 
 import { User, UserInterface } from '@modules/user/UserModel';
-import { Roles, WorkspaceUsers, WorkspaceUsersInterface } from '@modules/workspace_users/WorkspaceUsersModel';
+import { Roles, WorkspaceUsers } from '@modules/workspace_users/WorkspaceUsersModel';
 
 import { authUser } from '@common/utils/auth';
 import { Channel } from '@modules/channels/ChannelModel';
