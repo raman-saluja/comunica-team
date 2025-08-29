@@ -19,7 +19,7 @@ const socketIO = new Server(httpServer, {
 });
 
 socketIO.on('connection', (socket: Socket) => {
-  registerChatEvents(socket);
+  registerChatEvents(socket, socketIO); // Pass socketIO as parameter
 });
 
 const onCloseSignal = () => {

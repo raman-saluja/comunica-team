@@ -1,12 +1,13 @@
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io'; // Add Server import
 
 import { User } from '@modules/user/UserModel';
-import { socketIO } from '@src/index';
+// Remove this line: import { socketIO } from '@src/index';
 import { logger } from '@src/server';
 
 import { Chat } from './ChatModel';
 
-export const registerChatEvents = (socket: Socket) => {
+export const registerChatEvents = (socket: Socket, socketIO: Server) => {
+  // Add socketIO parameter
   socket.on('join-channel', async (payload: string) => {
     socket.join(`channel-${payload}`);
     socketIO.to(`channel-${payload}`).emit('joined-channel', payload);
@@ -22,7 +23,6 @@ export const registerChatEvents = (socket: Socket) => {
 
     const rooms = socketIO.of('/').adapter.rooms;
     console.log(rooms);
-    
 
     if (!user) return;
 
