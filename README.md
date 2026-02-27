@@ -45,3 +45,31 @@ Contributions are welcome! Please follow the standard GitHub flow:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## Docker (Frontend + Backend)
+
+This setup assumes you already have your own database server.
+
+Before starting, create a `.env` file from the provided template and set your values:
+
+```bash
+cp .env.example .env
+```
+
+Then from the repository root run:
+
+```bash
+docker compose up --build
+```
+
+This starts:
+
+- Frontend at `http://localhost:5173`
+- Backend API at `http://localhost:8080`
+
+To stop everything:
+
+```bash
+docker compose down
+```
+
